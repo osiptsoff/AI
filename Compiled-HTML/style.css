@@ -1,0 +1,126 @@
+body {
+    font-size: 21px;
+}
+
+.header {
+    height: 70px;
+    background: #bdd0f2;
+    color: #000000;
+    padding: 0 30px;
+    display: flex;
+    align-items: center;
+}
+
+.valuesBegin {
+    float: left;
+    max-width: 300px;
+    padding: 1rem;
+    margin: 50px 8%;
+    text-align: center;
+}
+
+.valuesEnd {
+    float: left;
+    max-width: 300px;
+    padding: 1rem;
+    margin: 50px 8%;
+    text-align: center;
+}
+
+table, th, td {
+    height: 80px;
+    width: 240px;
+    border: 1px solid #bdd0f2;
+
+    text-align: center;
+    background-color: #000;
+    color: #fff;
+    font-size: 1.5rem;
+}
+
+#emptyBlock {
+    background-color: #bdd0f2;
+    color: #bdd0f2;
+}
+
+.page {
+    float: left;
+    width: 360px;
+    padding: 1rem;
+    margin: 0 8%;
+    text-align: center;
+}
+
+.fifteen {
+    width: 100%;
+    padding-bottom: 100%;
+    background: #bdd0f2;
+    margin-bottom: 1rem;
+    position: relative;
+    user-select: none;
+
+    .item {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 33.25%;
+        height: 33.25%;
+        margin: 0;
+        padding: 0;
+        border: none;
+        background: #000000;
+        color: white;
+        font-size: 2rem;
+        box-shadow: inset 1px 1px #bdd0f2;
+        transition: transform 0.2s;
+        border-style: double;
+    }
+}
+
+h2 {
+    margin: 1rem;
+    font-size: 30px;
+}
+
+.algorithms {
+    border-style: solid;
+    border-color: #bdd0f2;
+    margin-bottom: 1rem;
+}
+
+h3 {
+    margin: 0.5rem;
+    font-size: 23px;
+}
+
+input {
+    appearance: none;
+    border-radius: 40%;
+    width: 20px;
+    height: 20px;
+
+    border: 2px solid #bdd0f2;
+    transition: 0.2s all linear;
+
+    margin-right: 5px;
+    position: relative;
+    top: 3px;
+}
+
+input:checked {
+    border: 6px solid black;
+}
+
+.button {
+    color:#fff;
+    background: #000;
+    width: 120px;
+    height: 40px;
+    font-size: 25px;
+    border: none;
+    cursor: pointer;
+    
+    &:hover {
+        background: #bdd0f2;
+    }
+}
