@@ -10,7 +10,7 @@ html(lang="ru")
         hr
         - var values = new Array(9).fill(0).map((item, index) => index + 1);
         
-        .valuesBegin
+        .statesBeginEnd
             h3 Начальное состояние
             table
                 tr 
@@ -25,20 +25,7 @@ html(lang="ru")
                     td 7
                     td 6
                     td 1 
-        .page
-            h2 Игра "Пятнашки"
-            .fifteen#fifteen
-                each val in values
-                    button.item(data-matrix-id=val)= val
-            .algorithms
-                h3 Выбор алгоритма
-                input(type="radio", name="algorithms", value="0", checked)
-                | Поиск (сначала) в глубину 
-                br
-                input(type="radio", name="algorithms", value="1")
-                | Поиск (сначала) в ширину
-            button.button#begin Начать
-        .valuesEnd
+            br
             h3 Конечное состояние
             table
                 tr 
@@ -53,4 +40,21 @@ html(lang="ru")
                     td 7
                     td 8
                     td#emptyBlock 9
+        .page
+            h2 Игра "Пятнашки"
+            .fifteen#fifteen
+                each val in values
+                    button.item(data-matrix-id=val)= val
+            .algorithms
+                h3 Выбор алгоритма
+                input(type="radio", name="algorithms", value="0", checked)
+                | Поиск (сначала) в глубину 
+                br
+                input(type="radio", name="algorithms", value="1")
+                | Поиск (сначала) в ширину
+            button.buttonAuto#buttonAuto Автоматический запуск
+            button.buttonStep#buttonStep Один шаг
+            button.buttonReset#buttonReset Сброс в начальное состояние
+        .textarea
+            textarea(readonly)#outWindow
         script(src="./index.js")

@@ -1,5 +1,5 @@
 body {
-    font-size: 21px;
+    font-size: 18px;
 }
 
 .header {
@@ -11,20 +11,12 @@ body {
     align-items: center;
 }
 
-.valuesBegin {
+.statesBeginEnd {
     float: left;
-    max-width: 300px;
+    width: 200px;
     padding: 1rem;
-    margin: 50px 8%;
-    text-align: center;
-}
-
-.valuesEnd {
-    float: left;
-    max-width: 300px;
-    padding: 1rem;
-    margin: 50px 8%;
-    text-align: center;
+    margin: 35px 7%;
+    align-items: center;
 }
 
 table, th, td {
@@ -45,9 +37,9 @@ table, th, td {
 
 .page {
     float: left;
-    width: 360px;
+    width: 300px;
     padding: 1rem;
-    margin: 0 8%;
+    margin: 0 7%;
     text-align: center;
 }
 
@@ -79,7 +71,7 @@ table, th, td {
 
 h2 {
     margin: 1rem;
-    font-size: 30px;
+    font-size: 28px;
 }
 
 .algorithms {
@@ -90,7 +82,7 @@ h2 {
 
 h3 {
     margin: 0.5rem;
-    font-size: 23px;
+    font-size: 19px;
 }
 
 input {
@@ -111,16 +103,62 @@ input:checked {
     border: 6px solid black;
 }
 
-.button {
+.buttonAuto {
     color:#fff;
     background: #000;
-    width: 120px;
-    height: 40px;
-    font-size: 25px;
+    width: 250px;
+    height: 35px;
+    font-size: 19px;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 1rem;
+    
+    &:hover {
+        background: #bdd0f2;
+    }
+}
+
+.buttonStep {
+    color:#fff;
+    background: #000;
+    width: 250px;
+    height: 35px;
+    font-size: 19px;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 1rem;
+    
+    &:hover {
+        background: #bdd0f2;
+    }
+}
+
+.buttonReset {
+    color:#fff;
+    background: #000;
+    width: 250px;
+    height: 50px;
+    font-size: 19px;
     border: none;
     cursor: pointer;
     
     &:hover {
         background: #bdd0f2;
     }
+}
+
+.textarea {
+    float: left;
+    width: 300px;
+    height: 600px;
+    border: 6px solid #bdd0f2;
+    margin: 35px 4%;
+}
+
+textarea {
+    width: 294px;
+    height: 594px;
+    resize: none;
+
+    font-size: 16px;
 }

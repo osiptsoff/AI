@@ -1,7 +1,7 @@
 const containerNode = document.getElementById('fifteen');
 const itemNodes = Array.from(containerNode.querySelectorAll('.item'));
 const countItems = 9;
-let algorithm;
+let algorithm, iteration = 1;
 
 let valuesBegin = [5, 8, 3, 4, 9, 2, 7, 6, 1];
 let valuesEnd = [1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -10,14 +10,36 @@ itemNodes[countItems - 1].style.display = 'none'; //невидимая фишк�
 let matrix = getMatrix(itemNodes.map((item) => Number(item.dataset.matrixId)));
 setInitialValues(matrix);
 setPositionItems(matrix);
-//console.log(matrix) //проверка
 
-document.getElementById('begin').addEventListener('click', () => {
-    const buttonCoords = findCoordinatesByNumber(9, matrix);
-    const buttonCoords2 = findCoordinatesByNumber(8, matrix); //для теста сдвигов
+document.getElementById('buttonAuto').addEventListener('click', () => {
+    //algorithm = getAlgorithm(); //определение алгоритма
+    let buttonCoords, buttonCoords2;
+    
+    buttonCoords = findCoordinatesByNumber(9, matrix);
+    buttonCoords2 = findCoordinatesByNumber(8, matrix); //для теста сдвигов
     swap(buttonCoords, buttonCoords2, matrix);
     setPositionItems(matrix);
-    algorithm = getAlgorithm(); //определение алгоритма
+
+    buttonCoords = findCoordinatesByNumber(9, matrix);
+    buttonCoords2 = findCoordinatesByNumber(3, matrix);
+    swap(buttonCoords, buttonCoords2, matrix);
+    setPositionItems(matrix);
+})
+
+document.getElementById('buttonStep').addEventListener('click', () => {
+    let strMatrixParent = getMatrixOutView(matrix);
+    let buttonCoords = findCoordinatesByNumber(9, matrix);
+    let buttonCoords2 = findCoordinatesByNumber(8, matrix);
+    swap(buttonCoords, buttonCoords2, matrix);
+    setPositionItems(matrix);
+    outNewInformation(matrix, strMatrixParent);
+})
+
+document.getElementById('buttonReset').addEventListener('click', () => {
+    setInitialValues(matrix);
+    setPositionItems(matrix);
+    outWindow.value = "";
+    iteration = 1;
 })
 
 function getMatrix(arr) {
@@ -86,4 +108,25 @@ function getAlgorithm() {
             console.log(alg.value) //проверка полученного значения
             return alg.value;
         }
+}
+
+function outNewInformation(matrix, strMatrixParent) {
+    let strMatrix = getMatrixOutView(matrix);
+    let compareResult = (strMatrix === strMatrixParent) ? "Конечное состояние достигнуто!" : "Конечное состояние не достигнуто!";
+    document.getElementById('outWindow').value += "Итерация №" + iteration + "\nТекущее состояние:\n" + strMatrix +
+                                                "Родитель:\n" + strMatrixParent + compareResult +"\nЧТО ТАМ ЕЩЕ НАДО\n\n";
+    iteration++;
+}
+
+function getMatrixOutView(matrix) {
+    let str = "";
+    for(let y = 0; y < matrix.length; y++) {
+        for(let x = 0; x < matrix[y].length; x++) {
+            if (matrix[y][x] === 9) str += "_ ";
+            else str += matrix[y][x] + " ";
+        }
+        str += "\n";
+    }
+    str += "\n";
+    return str;
 }
