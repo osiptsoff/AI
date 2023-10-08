@@ -13,6 +13,8 @@ import {State} from "./State.js";
 const stateFinder = {
     watchedStates : new Map(),
     searchingBuffer : [],
+    parentSymbol : Symbol("parent"),
+    changeCauseSymbol : Symbol("changeCause"),
     /**
      * <p>Compares two {@link State} by their {@link State#hash}.<p>
      * @param fir
@@ -41,6 +43,9 @@ const stateFinder = {
 
 /**
  * <p>Returns next game state according to Depth First Search algorithm.<p>
+ * <p>Adds parent state to returned child, use {@link stateFinder#parentSymbol} to get it.<p>
+ * <p>Adds change cause to returned child in format of array of two arrays, each consists of two coordinates of empty cell,
+ *      first for parent and second for child, use {@link stateFinder#changeCauseSymbol} to get it.<p>
  * <p>Intended to be used as {@link Iterator#next} so DO NOT invoke it explicitly.<p>
  * <p>Assign this function to {@link stateFinder}'s {@code algorithm} field.<p>
  * @returns {{done: boolean}|{done: boolean, value: State}}
@@ -58,6 +63,9 @@ const dfsTraverseStep = function() {
 
     for(let child of currentState)
         if( !stateFinder.watchedStates.has(child.hash()) ) {
+            child[stateFinder.parentSymbol] = currentState;
+            child[stateFinder.changeCauseSymbol] = [[currentState.emptyX, currentState.emptyY], [child.emptyX, child.emptyY]];
+
             children.push(child);
             child.depth = currentState.depth + 1;
         }
@@ -73,6 +81,9 @@ const dfsTraverseStep = function() {
 
 /**
  * <p>Returns next game state according to Breadth First Search algorithm.<p>
+ * <p>Adds parent state to returned child, use {@link stateFinder#parentSymbol} to get it.<p>
+ * <p>Adds change cause to returned child in format of array of two arrays, each consists of two coordinates of empty cell,
+ *      first for parent and second for child, use {@link stateFinder#changeCauseSymbol} to get it.<p>
  * <p>Intended to be used as {@link Iterator#next} so DO NOT invoke it explicitly.<p>
  * <p>Assign this function to {@link stateFinder}'s {@code algorithm} field.<p>
  * @returns {{done: boolean}|{done: boolean, value: *}}
@@ -88,6 +99,9 @@ const bfsTraverseStep = function() {
     for(let child of currentState) {
         child.depth = currentState.depth + 1;
         if ( !stateFinder.watchedStates.has(child.hash()) ) {
+            child[stateFinder.parentSymbol] = currentState;
+            child[stateFinder.changeCauseSymbol] = [[currentState.emptyX, currentState.emptyY], [child.emptyX, child.emptyY]];
+
             stateFinder.searchingBuffer.push(child);
             stateFinder.watchedStates.set(child.hash(), child);
         }
