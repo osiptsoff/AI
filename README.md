@@ -15,8 +15,8 @@ The repository is organized as follows:
 - **Lab_3**
 - **Lab_4**
 
-- In each "Lab_X" folder (where X is the lab number), you will find separate README.md files, code, data, and reports related to the corresponding lab assignment.
-- The "Instructions" folder contains additional instructions and examples to help you work with the repository.
+In each "Lab_X" folder (where X is the lab number), you will find separate README.md files, code, data, and reports related to the corresponding lab assignment.
+The "Instructions" folder contains additional instructions and examples to help you work with the repository.
 
 ## Instructions
 In the "Instructions" section, you will find detailed guidelines on working with the repository, code and report formatting rules, and examples that can be helpful to you.
