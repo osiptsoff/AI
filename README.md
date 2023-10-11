@@ -10,10 +10,10 @@ This repository is created for the collaborative work of students from group 030
 
 ## Repository Structure
 The repository is organized as follows:
-**- Lab_1
-- Lab_2
-- Lab_3
-- Lab_4**
+- **Lab_1**
+- **Lab_2**
+- **Lab_3**
+- **Lab_4**
 
 - In each "Lab_X" folder (where X is the lab number), you will find separate README.md files, code, data, and reports related to the corresponding lab assignment.
 - The "Instructions" folder contains additional instructions and examples to help you work with the repository.
