@@ -31,6 +31,7 @@ const stateFinder = {
     clear : function() {
         this.watchedStates.clear();
         this.searchingBuffer = [this.startState];
+        this.watchedStates.set(this.startState.hash(), this.startState);
     },
 
     [Symbol.iterator] : function () {
