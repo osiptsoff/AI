@@ -1,5 +1,4 @@
-import {State} from "./State.js";
-
+import {State} from "./State.mjs";
 
 /**
  * <p>Usage:<br>
