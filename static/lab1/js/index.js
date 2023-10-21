@@ -185,14 +185,18 @@ function autoAlgorithm(){
     if(!finished)
         stepAlg()
             .then(e => {
-                console.log(e.value.depth);
-                console.log("Parent\n" + e.value[stateFinder.parentSymbol]);
-                console.log(e.value + '');
+                // outWindowAlgorithm.value += "Итерация №" + (iteration++)
+                // + "\nГлубина №" + e.value.depth + "\nРодитель:\n" + e.value[stateFinder.parentSymbol] 
+                // + "Текущее состояние:\n" + e.value + "\n";
                 return e.value
             })
             .then(e => {
-                if(stateFinder.statesEqual(e, finish)) //что то потом написать
+                if(stateFinder.statesEqual(e, finish)) {//что то потом написать
                     finished = true;
+                    outWindowAlgorithm.value += "Глубина №" + e.depth + "\nРодитель:\n" + e[stateFinder.parentSymbol] 
+                    + "Текущее состояние:\n" + e + "\n";
+                    outWindowAlgorithm.value += "\nУСПЕХ!\nАлгоритм достиг конечного состояния!"
+                }
             })
             .then(autoAlgorithm);
     // stateFinder.algorithm = result;
@@ -205,8 +209,11 @@ async function stepAlg() {
 function singleStep() {
     stepAlg()
         .then(e => {
-            outWindowAlgorithm.value += "Итерация №" + iteration++ + "\nТекущее состояние:\n" + e.value + "\n";
+            outWindowAlgorithm.value += "Итерация №" + (iteration++) 
+            + "\nГлубина №" + e.value.depth + "\nРодитель:\n" + e.value[stateFinder.parentSymbol] 
+            + "Текущее состояние:\n" + e.value + "\n";
             //console.log(e.value + '')
+            console.log(e.value + '')
             return e.value;
         })
         .then(e => {
