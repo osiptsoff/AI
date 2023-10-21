@@ -50,7 +50,7 @@ const stateFinder = {
  * <p>Assign this function to {@link stateFinder}'s {@code algorithm} field.<p>
  * @returns {{done: boolean}|{done: boolean, value: State}}
  */
-const dfsTraverseStep = function() {
+const dfsTraverseStep = () => {
     if(stateFinder.searchingBuffer.length === 0)
         return {
             done : true
@@ -88,7 +88,7 @@ const dfsTraverseStep = function() {
  * <p>Assign this function to {@link stateFinder}'s {@code algorithm} field.<p>
  * @returns {{done: boolean}|{done: boolean, value: *}}
  */
-const bfsTraverseStep = function() {
+const bfsTraverseStep = () => {
     if(stateFinder.searchingBuffer.length === 0)
         return {
             done : true

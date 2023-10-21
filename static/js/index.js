@@ -14,6 +14,8 @@ let iterator;
 
 initializeAlgorithm();
 
+// 
+
 // let target;
 // let rightWay = [];
 
@@ -23,25 +25,24 @@ setInitialValues(matrix);
 setPositionItems(matrix);
 
 document.getElementById('buttonAuto').onclick = () => {
-    autoAlgorithm();
+    autoAlgorithm(); // умер помянем
 }
 
 document.getElementById('buttonStep').onclick = () => {
     singleStep();
     // startAlgorithm();
-    /*let strMatrixParent = getMatrixOutView(matrix);
-    let buttonCoords = findCoordinatesByNumber(9, matrix);
-    let buttonCoords2 = findCoordinatesByNumber(8, matrix);
-    swap(buttonCoords, buttonCoords2, matrix);
-    setPositionItems(matrix);
-    outNewInformation(matrix, strMatrixParent);*/
+    // let strMatrixParent = getMatrixOutView(matrix);
+    // let buttonCoords = findCoordinatesByNumber(9, matrix);
+    // let buttonCoords2 = findCoordinatesByNumber(8, matrix);
+    // swap(buttonCoords, buttonCoords2, matrix);
+    // setPositionItems(matrix);
+    // outNewInformation(matrix, strMatrixParent);
 }
 
 document.getElementById('buttonReset').addEventListener('click', () => {
     setInitialValues(matrix);
     setPositionItems(matrix);
-    outWindowAlgorithm.value = "";
-    outWindowWay.value = "";
+    outWindow.value = "";
     iteration = 1;
 })
 
@@ -104,34 +105,34 @@ function swap(coords1, coords2, matrix) {
     matrix[coords2[1]][coords2[0]] = temp;
 }
 
-/*
+function getAlgorithm() {
+    const algorithms = document.querySelectorAll('input[name="algorithms"]')
+    for (const alg of algorithms)
+        if (alg.checked) {
+            console.log(alg.value) //проверка полученного значения
+            return alg.value;
+        }
+}
+
 function outNewInformation(matrix, strMatrixParent) {
     let strMatrix = getMatrixOutView(matrix);
     let compareResult = (strMatrix === strMatrixParent) ? "Конечное состояние достигнуто!" : "Конечное состояние не достигнуто!";
-    //document.getElementById('outWindowAlgorithm')
-    outWindowAlgorithm.value += "Итерация №" + iteration + "\nТекущее состояние:\n" + strMatrix +
+    document.getElementById('outWindow').value += "Итерация №" + iteration + "\nТекущее состояние:\n" + strMatrix +
         "Родитель:\n" + strMatrixParent + compareResult +"\nЧТО ТАМ ЕЩЕ НАДО\n\n";
     iteration++;
-}*/
+}
 
 function getMatrixOutView(matrix) {
     let str = "";
     for(let y = 0; y < matrix.length; y++) {
         for(let x = 0; x < matrix[y].length; x++) {
-            if (matrix[y][x] === 9) str += "* ";
+            if (matrix[y][x] === 9) str += "_ ";
             else str += matrix[y][x] + " ";
         }
         str += "\n";
     }
     str += "\n";
     return str;
-}
-
-function getAlgorithm() {
-    const algorithms = document.querySelectorAll('input[name="algorithms"]')
-    for (const alg of algorithms)
-        if (alg.checked)
-            return alg.value;
 }
 
 function defineAndUseAlgorithm(){
@@ -182,7 +183,7 @@ function initializeAlgorithm() {
 let finished = false;
 function autoAlgorithm(){
     // initializeAlgorithm();
-    if(!finished)
+    if(!finished) {
         stepAlg()
             .then(e => {
                 console.log(e.value.depth);
@@ -195,6 +196,10 @@ function autoAlgorithm(){
                     finished = true;
             })
             .then(autoAlgorithm);
+        return;
+    }
+
+    // ещё код
     // stateFinder.algorithm = result;
 }
 
@@ -205,8 +210,7 @@ async function stepAlg() {
 function singleStep() {
     stepAlg()
         .then(e => {
-            outWindowAlgorithm.value += "Итерация №" + iteration++ + "\nТекущее состояние:\n" + e.value + "\n";
-            //console.log(e.value + '')
+            console.log(e.value + '')
             return e.value;
         })
         .then(e => {
@@ -214,7 +218,6 @@ function singleStep() {
             if(changeCause) {
                 swap(changeCause[1], changeCause[0], matrix);
                 setPositionItems(matrix);
-                // остальная инфа из списка в окно
             }
         });
 }
