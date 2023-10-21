@@ -178,6 +178,7 @@ function initializeAlgorithm() {
     // // setPositionItems(currentState); 
 }
 
+let rightWay = [];
 
 let finished = false;
 function autoAlgorithm(){
@@ -196,6 +197,17 @@ function autoAlgorithm(){
                     outWindowAlgorithm.value += "Глубина №" + e.depth + "\nРодитель:\n" + e[stateFinder.parentSymbol] 
                     + "Текущее состояние:\n" + e + "\n";
                     outWindowAlgorithm.value += "\nУСПЕХ!\nАлгоритм достиг конечного состояния!"
+
+                    //Правильный путь
+                    rightWay.push(e);
+                    for(let i=e[stateFinder.parentSymbol]; i !== undefined; i=i[stateFinder.parentSymbol]){
+                        rightWay.push(i);
+                    }
+                    rightWay.reverse();
+                    console.log("Длина массива rightWay: " + rightWay.length);
+                    rightWay.forEach(k => console.log(k + ''));
+                    //Правильный путь
+                    
                 }
             })
             .then(autoAlgorithm);
