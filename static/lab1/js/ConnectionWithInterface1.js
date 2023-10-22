@@ -1,5 +1,6 @@
 import {State} from "./State.mjs";
 import {stateFinder, dfsTraverseStep, bfsTraverseStep} from "./StateFinder.mjs";
+import {logger} from "../../Logger.mjs";
 
 const containerNode = document.getElementById('fifteen');
 const itemNodes = Array.from(containerNode.querySelectorAll('.item'));
@@ -11,7 +12,6 @@ let valuesEnd = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 let finish = new State(valuesEnd, 9, 3);
 let iterator;
-
 initializeAlgorithm();
 
 // let target;
@@ -184,14 +184,15 @@ function autoAlgorithm(){
     if(!finished)
         stepAlg()
             .then(e => {
-                // outWindowAlgorithm.value += "Итерация №" + (iteration++)
-                // + "\nГлубина №" + e.value.depth + "\nРодитель:\n" + e.value[stateFinder.parentSymbol] 
-                // + "Текущее состояние:\n" + e.value + "\n";
+                logger.addToBuffer( "Итерация №" + (iteration++)
+                + "\nГлубина №" + e.value.depth + "\nРодитель:\n" + e.value[stateFinder.parentSymbol]
+                + "Текущее состояние:\n" + e.value + "\n");
                 return e.value
             })
             .then(e => {
                 if(stateFinder.statesEqual(e, finish)) {//что то потом написать
                     finished = true;
+                    logger.flushBuffer(logger.logfileName.autoTraverse)
                     outWindowAlgorithm.value += "Глубина №" + e.depth + "\nРодитель:\n" + e[stateFinder.parentSymbol] 
                     + "Текущее состояние:\n" + e + "\n";
                     outWindowAlgorithm.value += "\nУСПЕХ!\nАлгоритм достиг конечного состояния!"
