@@ -28,13 +28,6 @@ document.getElementById('buttonAuto').onclick = () => {
 
 document.getElementById('buttonStep').onclick = () => {
     singleStep();
-    // startAlgorithm();
-    /*let strMatrixParent = getMatrixOutView(matrix);
-    let buttonCoords = findCoordinatesByNumber(9, matrix);
-    let buttonCoords2 = findCoordinatesByNumber(8, matrix);
-    swap(buttonCoords, buttonCoords2, matrix);
-    setPositionItems(matrix);
-    outNewInformation(matrix, strMatrixParent);*/
 }
 
 document.getElementById('buttonReset').addEventListener('click', () => {
@@ -86,45 +79,11 @@ function setNodeStyles(node, x, y) {
     node.style.transform = `translate3D(${x*shiftPs}%, ${y*shiftPs}%, 0)`
 }
 
-/*function findCoordinatesByNumber(number, matrix){
-    for(let y = 0; y < matrix.length; y++) {
-        for(let x = 0; x < matrix[y].length; x++) {
-            if(matrix[y][x] === number) {
-                return {x, y};
-            }
-        }
-    }
-    return null;
-}*/
-
 function swap(coords1, coords2, matrix) {
     const temp = matrix[coords1[1]][coords1[0]];
     matrix[coords1[1]][coords1[0]] = matrix[coords2[1]][coords2[0]];
     matrix[coords2[1]][coords2[0]] = temp;
 }
-
-/*
-function outNewInformation(matrix, strMatrixParent) {
-    let strMatrix = getMatrixOutView(matrix);
-    let compareResult = (strMatrix === strMatrixParent) ? "Конечное состояние достигнуто!" : "Конечное состояние не достигнуто!";
-    //document.getElementById('outWindowAlgorithm')
-    outWindowAlgorithm.value += "Итерация №" + iteration + "\nТекущее состояние:\n" + strMatrix +
-        "Родитель:\n" + strMatrixParent + compareResult +"\nЧТО ТАМ ЕЩЕ НАДО\n\n";
-    iteration++;
-}*/
-
-/*function getMatrixOutView(matrix) {
-    let str = "";
-    for(let y = 0; y < matrix.length; y++) {
-        for(let x = 0; x < matrix[y].length; x++) {
-            if (matrix[y][x] === 9) str += "* ";
-            else str += matrix[y][x] + " ";
-        }
-        str += "\n";
-    }
-    str += "\n";
-    return str;
-}*/
 
 function getAlgorithm() {
     const algorithms = document.querySelectorAll('input[name="algorithms"]')
@@ -177,25 +136,34 @@ function initializeAlgorithm() {
     // // setPositionItems(currentState); 
 }
 
+function defineAndUseAlgorithmLogger(){
+    algorithm = getAlgorithm();
+    if (algorithm === "0") {
+        return logger.logfileName.dfsAutoLog;
+    } else {
+        return logger.logfileName.bfsAutoLog;
+    }
+}
 
 let finished = false;
 function autoAlgorithm(){
+    let fileName = defineAndUseAlgorithmLogger();
     // initializeAlgorithm();
     if(!finished)
         stepAlg()
             .then(e => {
                 logger.addToBuffer( "Итерация №" + (iteration++)
-                + "\nГлубина №" + e.value.depth + "\nРодитель:\n" + e.value[stateFinder.parentSymbol]
-                + "Текущее состояние:\n" + e.value + "\n");
+                    + "\nГлубина №" + e.value.depth + "\nТекущее состояние:\n" + e.value
+                    + "Родитель:\n" + e.value[stateFinder.parentSymbol] + "\n");
                 return e.value
             })
             .then(e => {
                 if(stateFinder.statesEqual(e, finish)) {//что то потом написать
                     finished = true;
-                    logger.flushBuffer(logger.logfileName.autoTraverse)
-                    outWindowAlgorithm.value += "Глубина №" + e.depth + "\nРодитель:\n" + e[stateFinder.parentSymbol] 
-                    + "Текущее состояние:\n" + e + "\n";
-                    outWindowAlgorithm.value += "\nУСПЕХ!\nАлгоритм достиг конечного состояния!"
+                    logger.flushBuffer(fileName)
+                    outWindow.value += "Конечное состояние найдено на глубине " + e.depth + ".\nТекущее состояние:\n" + e + "\n"
+                                             + "\nАлгоритм достиг конечного состояния!\nИнформацию об итерациях можно посмотреть в файле.";
+                    //Информация о времени работы алгоритма
                 }
             })
             .then(autoAlgorithm);
@@ -209,10 +177,9 @@ async function stepAlg() {
 function singleStep() {
     stepAlg()
         .then(e => {
-            outWindowAlgorithm.value += "Итерация №" + (iteration++) 
-            + "\nГлубина №" + e.value.depth + "\nРодитель:\n" + e.value[stateFinder.parentSymbol] 
-            + "Текущее состояние:\n" + e.value + "\n";
-            //console.log(e.value + '')
+            outWindow.value += "Итерация №" + (iteration++) 
+            + "\nГлубина №" + e.value.depth + "\nТекущее состояние:\n" + e.value 
+            + "Родитель:\n" + e.value[stateFinder.parentSymbol] + "\n";
             console.log(e.value + '')
             return e.value;
         })

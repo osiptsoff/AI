@@ -3,7 +3,8 @@ let logger = {
     lastStatus : undefined,
     buffer : '',
     logfileName : {
-        autoTraverse : "autotraverse",
+        dfsAutoLog: "dfsautolog",
+        bfsAutoLog : "bfsautolog",
         rightPath : "rightpath",
     },
 

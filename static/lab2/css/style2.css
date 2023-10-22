@@ -18,7 +18,7 @@ h1 {
     float: left;
     width: 200px;
     padding: 1rem;
-    margin: 35px 2%;
+    margin: 35px 7%;
     align-items: center;
 }
 
@@ -42,7 +42,7 @@ table, th, td {
     float: left;
     width: 300px;
     padding: 1rem;
-    margin: 0 4%;
+    margin: 0 7%;
     text-align: center;
 }
 
@@ -155,7 +155,7 @@ input:checked {
     width: 300px;
     height: 600px;
     
-    margin: 35px 2%;
+    margin: 35px 6%;
 }
 
 textarea {
