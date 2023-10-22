@@ -144,6 +144,23 @@ function defineAndUseAlgorithmLogger(){
         return logger.logfileName.bfsAutoLog;
     }
 }
+function serializeState(state) {
+    let res = '',
+        parent = state[stateFinder.parentSymbol],
+        children = state[stateFinder.childrenSymbol],
+        visited = state[stateFinder.visitedSymbol];
+    let parentSerialized = parent === undefined ? 'нет' : parent + '',
+        childrenSerialized = !children.length ? 'нет'  : children.join('\n'),
+        visitedSerialized = !visited.length ? 'нет' : visited.join('\n');
+
+    res += 'Глубина:\n' + state.depth + '\n';
+    res += '\nРодитель:\n' + parentSerialized + '\n';
+    res += '\nТекущее состояние:\n' + state + '\n';
+    res += 'Запланированные к дальнейшему посещению потомки:\n' + childrenSerialized + '\n';
+    res += 'Непосещённые потомки (посещённые ранее состояния):\n' + visitedSerialized + '\n';
+
+    return res;
+}
 
 let finished = false;
 function autoAlgorithm(){
@@ -152,17 +169,14 @@ function autoAlgorithm(){
     if(!finished)
         stepAlg()
             .then(e => {
-                logger.addToBuffer( "Итерация №" + (iteration++)
-                    + "\nГлубина №" + e.value.depth + "\nТекущее состояние:\n" + e.value
-                    + "Родитель:\n" + e.value[stateFinder.parentSymbol] + "\n");
+                logger.addToBuffer( "Итерация №" + (iteration++) + '\n' + serializeState(e.value));
                 return e.value
             })
             .then(e => {
                 if(stateFinder.statesEqual(e, finish)) {//что то потом написать
                     finished = true;
                     logger.flushBuffer(fileName)
-                    outWindow.value += "Конечное состояние найдено на глубине " + e.depth + ".\nТекущее состояние:\n" + e + "\n"
-                                             + "\nАлгоритм достиг конечного состояния!\nИнформацию об итерациях можно посмотреть в файле.";
+                    outWindow.value += "Конечное состояние найдено.\n" + serializeState(e);
                     //Информация о времени работы алгоритма
                 }
             })
@@ -177,10 +191,7 @@ async function stepAlg() {
 function singleStep() {
     stepAlg()
         .then(e => {
-            outWindow.value += "Итерация №" + (iteration++) 
-            + "\nГлубина №" + e.value.depth + "\nТекущее состояние:\n" + e.value 
-            + "Родитель:\n" + e.value[stateFinder.parentSymbol] + "\n";
-            console.log(e.value + '')
+            outWindow.value += "Итерация №" + (iteration++) + '\n' + serializeState(e.value)
             return e.value;
         })
         .then(e => {

@@ -14,6 +14,8 @@ const stateFinder = {
     searchingBuffer : [],
     parentSymbol : Symbol("parent"),
     changeCauseSymbol : Symbol("changeCause"),
+    childrenSymbol : Symbol("children"),
+    visitedSymbol : Symbol('visited'),
     /**
      * <p>Compares two {@link State} by their {@link State#hash}.<p>
      * @param fir
@@ -60,6 +62,7 @@ const dfsTraverseStep = () => {
     stateFinder.watchedStates.set(currentState.hash(), currentState);
 
     let children = [];
+    let visited = [];
 
     for(let child of currentState)
         if( !stateFinder.watchedStates.has(child.hash()) ) {
@@ -68,10 +71,14 @@ const dfsTraverseStep = () => {
 
             children.push(child);
             child.depth = currentState.depth + 1;
-        }
+        } else
+            visited.push(child);
     children = children.reverse();
 
     stateFinder.searchingBuffer.push(...children);
+
+    currentState[stateFinder.childrenSymbol] = children;
+    currentState[stateFinder.visitedSymbol] = visited;
 
     return {
         done : false,
@@ -96,16 +103,24 @@ const bfsTraverseStep = () => {
 
     let currentState = stateFinder.searchingBuffer.shift();
 
+    let children = [];
+    let visited = [];
+
     for(let child of currentState) {
         child.depth = currentState.depth + 1;
         if ( !stateFinder.watchedStates.has(child.hash()) ) {
             child[stateFinder.parentSymbol] = currentState;
             child[stateFinder.changeCauseSymbol] = [[currentState.emptyX, currentState.emptyY], [child.emptyX, child.emptyY]];
 
-            stateFinder.searchingBuffer.push(child);
+            children.push(child);
             stateFinder.watchedStates.set(child.hash(), child);
-        }
+        } else
+            visited.push(child);
     }
+    stateFinder.searchingBuffer.push(...children);
+
+    currentState[stateFinder.childrenSymbol] = children;
+    currentState[stateFinder.visitedSymbol] = visited;
 
     return {
         done : false,
