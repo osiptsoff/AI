@@ -1,42 +1,86 @@
 import {State} from "./State.mjs";
 import {stateFinder, dfsTraverseStep, bfsTraverseStep} from "./StateFinder.mjs";
-import {logger} from "../../Logger.mjs";
-import {getMatrix, setInitialValues, setPositionItems, swap, getAlgorithm} from "../../InterfaceFunctions.mjs";
+import {logger} from "../../commonjs/Logger.mjs";
+import {getMatrix, setInitialValues, setPositionItems, swap, getAlgorithm} from "../../commonjs/InterfaceFunctions.mjs";
 
 const containerNode = document.getElementById('fifteen');
 const itemNodes = Array.from(containerNode.querySelectorAll('.item'));
 const countItems = 9;
-let algorithm, iteration = 1;
+let algorithm;
+let iteration;
 
 let valuesBegin = [5, 8, 3, 4, 9, 2, 7, 6, 1];
 let valuesEnd = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 let finish = new State(valuesEnd, 9, 3);
+let fileName;
 let iterator;
-initializeAlgorithm();
-
-// let target;
-// let rightWay = [];
 
 itemNodes[countItems - 1].style.display = 'none'; //невидимая фишка
 let matrix = getMatrix(itemNodes.map((item) => Number(item.dataset.matrixId)));
 setInitialValues(matrix, valuesBegin);
 setPositionItems(matrix, itemNodes);
 
-document.getElementById('buttonAuto').onclick = () => {
-    autoAlgorithm();
-}
+let buttonAuto = document.getElementById('buttonAuto');
+buttonAuto.onclick = startAuto;
 
-document.getElementById('buttonStep').onclick = () => {
-    singleStep();
-}
+let buttonStep = document.getElementById('buttonStep');
+buttonStep.onclick = startManual;
 
-document.getElementById('buttonReset').addEventListener('click', () => {
+let buttonReset = document.getElementById('buttonReset');
+buttonReset.onclick = reset;
+
+let manualStarted = false;
+
+function reset() {
     setInitialValues(matrix, valuesBegin);
     setPositionItems(matrix, itemNodes);
     outWindow.value = "";
+
     iteration = 1;
-})
+
+    manualStarted = false;
+    buttonStep.onclick = startManual;
+}
+
+function startManual() {
+    reset();
+
+    manualStarted = true;
+
+    initializeAlgorithm();
+    fileName = defineAndUseAlgorithmLogger();
+    buttonStep.onclick = singleStep;
+
+    singleStep();
+}
+
+function finishManual() {
+    buttonStep.onclick = startManual;
+    manualStarted = false;
+}
+
+function startAuto() {
+    if(!manualStarted) {
+        initializeAlgorithm();
+        fileName = defineAndUseAlgorithmLogger();
+        reset();
+    } else finishManual();
+
+    buttonAuto.disabled = true;
+    buttonStep.disabled = true;
+    buttonReset.disabled = true;
+
+    autoAlgorithm();
+}
+
+function finishAuto() {
+    buttonAuto.disabled = false;
+    buttonStep.disabled = false;
+    buttonReset.disabled = false;
+
+    finished = false;
+}
 
 function defineAndUseAlgorithm(){
     algorithm = getAlgorithm();
@@ -49,37 +93,14 @@ function defineAndUseAlgorithm(){
 
 function initializeAlgorithm() {
     const result = defineAndUseAlgorithm();
-    // const currentState = result;
     let st = new State(valuesBegin, 9, 3);
+
     stateFinder.algorithm = result;
 
     stateFinder.startState = st;
     stateFinder.clear();
 
     iterator = stateFinder[Symbol.iterator]();
-    // for(state of stateFinder) {
-    //     console.log(state.depth);
-    //     console.log("Parent\n" + state[stateFinder.parentSymbol]);
-    //     console.log(state + '');
-    //     counter++; //удали потом пж меня
-    //     if (stateFinder.statesEqual(state, finish)){
-    //         target = state;
-    //         break;
-    //     }
-    //     // if(counter===20) //удали потом пж меня
-    //     //     break;
-    // }
-    // //Правильный путь
-    // rightWay.push(target);
-    // for(let i=target[stateFinder.parentSymbol]; i !== undefined; i=i[stateFinder.parentSymbol]){
-    //     rightWay.push(i);
-    // }
-    // rightWay.reverse();
-    // //Правильный путь
-
-
-    // rightWay.forEach(e => console.log(e + ''));
-    // // setPositionItems(currentState); 
 }
 
 function defineAndUseAlgorithmLogger(){
@@ -110,8 +131,6 @@ function serializeState(state) {
 
 let finished = false;
 function autoAlgorithm(){
-    let fileName = defineAndUseAlgorithmLogger();
-    // initializeAlgorithm();
     if(!finished)
         stepAlg()
             .then(e => {
@@ -126,7 +145,11 @@ function autoAlgorithm(){
                     //Информация о времени работы алгоритма
                 }
             })
-            .then(autoAlgorithm);
+            .then(autoAlgorithm)
+            .then(() => {
+                if (finished)
+                    finishAuto();
+            });
     // stateFinder.algorithm = result;
 }
 
@@ -146,6 +169,12 @@ function singleStep() {
                 swap(changeCause[1], changeCause[0], matrix);
                 setPositionItems(matrix, itemNodes);
                 // остальная инфа из списка в окно
+            }
+            return e;
+        }).then(e => {
+            if(stateFinder.statesEqual(e, finish)) {
+                outWindow.value += "Конечное состояние достигнуто.\n";
+                finishManual();
             }
         });
 }

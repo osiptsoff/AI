@@ -1,6 +1,6 @@
 //import {State} from "./State.mjs";
 //import {stateFinder, dfsTraverseStep, bfsTraverseStep} from "./StateFinder.mjs";
-import {getMatrix, setInitialValues, setPositionItems, swap, getAlgorithm} from "../../InterfaceFunctions.mjs";
+import {getMatrix, setInitialValues, setPositionItems, swap, getAlgorithm} from "../../commonjs/InterfaceFunctions.mjs";
 
 const containerNode = document.getElementById('fifteen');
 const itemNodes = Array.from(containerNode.querySelectorAll('.item'));
