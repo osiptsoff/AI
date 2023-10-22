@@ -69,7 +69,6 @@ function setInitialValues(matrix) {
             matrix[y][x] = valuesBegin[i];
             i++;
         }
-
 }
 
 function setPositionItems(matrix) {
@@ -87,7 +86,7 @@ function setNodeStyles(node, x, y) {
     node.style.transform = `translate3D(${x*shiftPs}%, ${y*shiftPs}%, 0)`
 }
 
-function findCoordinatesByNumber(number, matrix){
+/*function findCoordinatesByNumber(number, matrix){
     for(let y = 0; y < matrix.length; y++) {
         for(let x = 0; x < matrix[y].length; x++) {
             if(matrix[y][x] === number) {
@@ -96,7 +95,7 @@ function findCoordinatesByNumber(number, matrix){
         }
     }
     return null;
-}
+}*/
 
 function swap(coords1, coords2, matrix) {
     const temp = matrix[coords1[1]][coords1[0]];
@@ -114,7 +113,7 @@ function outNewInformation(matrix, strMatrixParent) {
     iteration++;
 }*/
 
-function getMatrixOutView(matrix) {
+/*function getMatrixOutView(matrix) {
     let str = "";
     for(let y = 0; y < matrix.length; y++) {
         for(let x = 0; x < matrix[y].length; x++) {
@@ -125,7 +124,7 @@ function getMatrixOutView(matrix) {
     }
     str += "\n";
     return str;
-}
+}*/
 
 function getAlgorithm() {
     const algorithms = document.querySelectorAll('input[name="algorithms"]')

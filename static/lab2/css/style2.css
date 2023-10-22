@@ -1,0 +1,168 @@
+body {
+    font-size: 17px;
+}
+
+.header {
+    height: 40px;
+    background: #bdd0f2;
+    color: #000;
+    text-align: center;
+    padding: 10px;
+}
+
+h1 {
+    margin: 0;
+}
+
+.statesBeginEnd {
+    float: left;
+    width: 200px;
+    padding: 1rem;
+    margin: 35px 2%;
+    align-items: center;
+}
+
+table, th, td {
+    height: 80px;
+    width: 240px;
+    border: 1px solid #bdd0f2;
+
+    text-align: center;
+    background-color: #000;
+    color: #fff;
+    font-size: 1.5rem;
+}
+
+#emptyBlock {
+    background-color: #bdd0f2;
+    color: #bdd0f2;
+}
+
+.page {
+    float: left;
+    width: 300px;
+    padding: 1rem;
+    margin: 0 4%;
+    text-align: center;
+}
+
+.fifteen {
+    width: 100%;
+    padding-bottom: 100%;
+    background: #bdd0f2;
+    margin-bottom: 1rem;
+    position: relative;
+    user-select: none;
+
+    .item {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 33.25%;
+        height: 33.25%;
+        margin: 0;
+        padding: 0;
+        border: none;
+        background: #000000;
+        color: white;
+        font-size: 2rem;
+        box-shadow: inset 1px 1px #bdd0f2;
+        transition: transform 0.2s;
+        border-style: double;
+    }
+}
+
+h2 {
+    margin: 1rem;
+    font-size: 28px;
+}
+
+.algorithms {
+    border-style: solid;
+    border-color: #bdd0f2;
+    margin-bottom: 1rem;
+}
+
+h3 {
+    margin: 0.5rem;
+    font-size: 19px;
+}
+
+input {
+    appearance: none;
+    border-radius: 40%;
+    width: 20px;
+    height: 20px;
+
+    border: 2px solid #bdd0f2;
+    transition: 0.2s all linear;
+
+    margin-right: 5px;
+    position: relative;
+    top: 3px;
+}
+
+input:checked {
+    border: 6px solid black;
+}
+
+.buttonAuto {
+    color:#fff;
+    background: #000;
+    width: 230px;
+    height: 65px;
+    font-size: 17px;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 1rem;
+    
+    &:hover {
+        background: #bdd0f2;
+    }
+}
+
+.buttonStep {
+    color:#fff;
+    background: #000;
+    width: 230px;
+    height: 30px;
+    font-size: 17px;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 1rem;
+    
+    &:hover {
+        background: #bdd0f2;
+    }
+}
+
+.buttonReset {
+    color:#fff;
+    background: #000;
+    width: 230px;
+    height: 45px;
+    font-size: 17px;
+    border: none;
+    cursor: pointer;
+    
+    &:hover {
+        background: #bdd0f2;
+    }
+}
+
+.textarea {
+    float: left;
+    width: 300px;
+    height: 600px;
+    
+    margin: 35px 2%;
+}
+
+textarea {
+    width: 294px;
+    height: 594px;
+    resize: none;
+    border: 6px solid #bdd0f2;
+
+    font-size: 16px;
+}

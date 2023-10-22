@@ -3,12 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <title>Лабораторная №2</title>
-    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/style2.css">
 </head>
 <body>
     <header class="header">
-        <h1>Лабораторная работа №2. Методы чего-то там.</h1>
+        <h1>Лабораторная работа №2. Методы информированного (эврестического поиска).</h1>
     </header>
+    <hr>
+    
+    <div class="statesBeginEnd">
+        <h3>Начальное состояние</h3>
+        <table>
+            <tr>
+                <td>5</td>
+                <td>8</td>
+                <td>3</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td id="emptyBlock">9</td>
+                <td>2</td>
+            </tr>
+            <tr>
+                <td>7</td>
+                <td>6</td>
+                <td>1</td>
+            </tr>
+        </table>
+        <br>
+        <h3>Конечное состояние</h3>
+        <table>
+            <tr>
+                <td>1</td><td>2</td><td>3</td>
+            </tr>
+            <tr>
+                <td>4</td><td>5</td><td>6</td>
+            </tr>
+            <tr>
+                <td>7</td><td>8</td><td id="emptyBlock">9</td>
+            </tr>
+        </table>
+    </div>
+    <div class="page">
+        <h2>Игра "Пятнашки"</h2>
+        <div class="fifteen" id="fifteen">
+            <button class="item" data-matrix-id="1">1</button>
+            <button class="item" data-matrix-id="2">2</button>
+            <button class="item" data-matrix-id="3">3</button>
+            <button class="item" data-matrix-id="4">4</button>
+            <button class="item" data-matrix-id="5">5</button>
+            <button class="item" data-matrix-id="6">6</button>
+            <button class="item" data-matrix-id="7">7</button>
+            <button class="item" data-matrix-id="8">8</button>
+            <button class="item" data-matrix-id="9">9</button>
+        </div>
+        <div class="algorithms">
+            <h3>Выбор эврестической функции для алгоритма А*</h3>
+            <input type="radio" name="algorithms" value="0" checked> h1 (число фишек, стоящих не на своем месте) <br>
+            <input type="radio" name="algorithms" value="1"> h2 (суммарное по всем фишкам число шагов до целевого положения - манхэттенское расстояние)
+        </div>
+        <button class="buttonAuto" id="buttonAuto">Автоматический запуск алгоритма и визуализация найденного пути</button>
+        <button class="buttonStep" id="buttonStep">Один шаг алгоритма</button>
+        <button class="buttonReset" id="buttonReset">Сброс в начальное состояние</button>
+    </div>
+    <div class="textarea">
+        <h3>Информация про алгоритм</h3>
+        <textarea readonly id="outWindowAlgorithm"></textarea>
+    </div>
+    <div class="textarea">
+        <h3>Информация о найденном пути</h3>
+        <textarea readonly id="outWindowWay"></textarea>
+    </div>
+    <script type="module" src="./js/ConnectionWithInterface2.js"></script>
 </body>
 </html>
 

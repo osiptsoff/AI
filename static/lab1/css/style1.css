@@ -1,14 +1,17 @@
 body {
-    font-size: 18px;
+    font-size: 17px;
 }
 
 .header {
-    height: 70px;
+    height: 40px;
     background: #bdd0f2;
-    color: #000000;
-    padding: 0 30px;
-    display: flex;
-    align-items: center;
+    color: #000;
+    text-align: center;
+    padding: 10px;
+}
+
+h1 {
+    margin: 0;
 }
 
 .statesBeginEnd {
@@ -106,9 +109,9 @@ input:checked {
 .buttonAuto {
     color:#fff;
     background: #000;
-    width: 250px;
-    height: 70px;
-    font-size: 19px;
+    width: 230px;
+    height: 65px;
+    font-size: 17px;
     border: none;
     cursor: pointer;
     margin-bottom: 1rem;
@@ -121,9 +124,9 @@ input:checked {
 .buttonStep {
     color:#fff;
     background: #000;
-    width: 250px;
-    height: 35px;
-    font-size: 19px;
+    width: 230px;
+    height: 30px;
+    font-size: 17px;
     border: none;
     cursor: pointer;
     margin-bottom: 1rem;
@@ -136,9 +139,9 @@ input:checked {
 .buttonReset {
     color:#fff;
     background: #000;
-    width: 250px;
-    height: 50px;
-    font-size: 19px;
+    width: 230px;
+    height: 45px;
+    font-size: 17px;
     border: none;
     cursor: pointer;
     
