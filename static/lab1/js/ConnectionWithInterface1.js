@@ -5,13 +5,13 @@ import {getMatrix, setInitialValues, setPositionItems, swap, getAlgorithm} from 
 
 const containerNode = document.getElementById('fifteen');
 const itemNodes = Array.from(containerNode.querySelectorAll('.item'));
-const countItems = 9;
+const countItems = 9, emptyNum = '*';
 let algorithm, iteration = 1;
 
-let valuesBegin = [5, 8, 3, 4, 9, 2, 7, 6, 1];
-let valuesEnd = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+let valuesBegin = [5, 8, 3, 4, emptyNum, 2, 7, 6, 1];
+let valuesEnd = [1, 2, 3, 4, 5, 6, 7, 8, emptyNum];
 
-let finish = new State(valuesEnd, 9, 3);
+let finish = new State(valuesEnd, emptyNum, 3);
 let iterator;
 initializeAlgorithm();
 
@@ -21,7 +21,7 @@ initializeAlgorithm();
 itemNodes[countItems - 1].style.display = 'none'; //невидимая фишка
 let matrix = getMatrix(itemNodes.map((item) => Number(item.dataset.matrixId)));
 setInitialValues(matrix, valuesBegin);
-setPositionItems(matrix, itemNodes);
+setPositionItems(matrix, itemNodes, emptyNum);
 
 document.getElementById('buttonAuto').onclick = () => {
     autoAlgorithm();
@@ -33,7 +33,7 @@ document.getElementById('buttonStep').onclick = () => {
 
 document.getElementById('buttonReset').addEventListener('click', () => {
     setInitialValues(matrix, valuesBegin);
-    setPositionItems(matrix, itemNodes);
+    setPositionItems(matrix, itemNodes, emptyNum);
     outWindow.value = "";
     iteration = 1;
 })
@@ -50,7 +50,7 @@ function defineAndUseAlgorithm(){
 function initializeAlgorithm() {
     const result = defineAndUseAlgorithm();
     // const currentState = result;
-    let st = new State(valuesBegin, 9, 3);
+    let st = new State(valuesBegin, emptyNum, 3);
     stateFinder.algorithm = result;
 
     stateFinder.startState = st;
@@ -90,17 +90,18 @@ function defineAndUseAlgorithmLogger(){
         return logger.logfileName.bfsAutoLog;
     }
 }
+
 function serializeState(state) {
     let res = '',
         parent = state[stateFinder.parentSymbol],
         children = state[stateFinder.childrenSymbol],
         visited = state[stateFinder.visitedSymbol];
-    let parentSerialized = parent === undefined ? 'нет' : parent + '',
-        childrenSerialized = !children.length ? 'нет'  : children.join('\n'),
-        visitedSerialized = !visited.length ? 'нет' : visited.join('\n');
+    let parentSerialized = parent === undefined ? 'нет\n' : parent + '',
+        childrenSerialized = !children.length ? 'нет\n'  : children.join('\n'),
+        visitedSerialized = !visited.length ? 'нет\n' : visited.join('\n');
 
-    res += 'Глубина:\n' + state.depth + '\n';
-    res += '\nРодитель:\n' + parentSerialized + '\n';
+    res += 'Глубина: ' + state.depth + '\n';
+    res += '\nРодитель:\n' + parentSerialized;
     res += '\nТекущее состояние:\n' + state + '\n';
     res += 'Запланированные к дальнейшему посещению потомки:\n' + childrenSerialized + '\n';
     res += 'Непосещённые потомки (посещённые ранее состояния):\n' + visitedSerialized + '\n';
@@ -122,8 +123,9 @@ function autoAlgorithm(){
                 if(stateFinder.statesEqual(e, finish)) {//что то потом написать
                     finished = true;
                     logger.flushBuffer(fileName)
-                    outWindow.value += "Конечное состояние найдено.\n" + serializeState(e);
-                    //Информация о времени работы алгоритма
+                    outWindow.value += "Конечное состояние найдено на глубине " + e.depth + ".\nТекущее состояние:\n" + e + "\n\nАлгоритм достиг конечного состояния!"
+                                      + "\nИнформацию об итерациях и найденный путь можно посмотреть в log-файлах.";
+                    //Добавить вывод информации о времени работы алгоритма
                 }
             })
             .then(autoAlgorithm);
@@ -144,8 +146,7 @@ function singleStep() {
             let changeCause = e[stateFinder.changeCauseSymbol];
             if(changeCause) {
                 swap(changeCause[1], changeCause[0], matrix);
-                setPositionItems(matrix, itemNodes);
-                // остальная инфа из списка в окно
+                setPositionItems(matrix, itemNodes, emptyNum);
             }
         });
 }

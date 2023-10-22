@@ -5,7 +5,11 @@ let logger = {
     logfileName : {
         dfsAutoLog: "dfsautolog",
         bfsAutoLog : "bfsautolog",
-        rightPath : "rightpath",
+        rightPath1 : "rightpath1",
+
+        h1AutoLog: "h1autolog",
+        h2AutoLog : "h2autolog",
+        rightPath2 : "rightpath2",
     },
 
     addToBuffer : function(data) {

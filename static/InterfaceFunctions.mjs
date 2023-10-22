@@ -25,10 +25,10 @@ function setInitialValues(matrix, valuesBegin) {
         }
 }
 
-function setPositionItems(matrix, itemNodes) {
+function setPositionItems(matrix, itemNodes, emptyNum) {
     for(let y = 0; y < matrix.length; y++) {
         for(let x = 0; x < matrix[y].length; x++) {
-            const value = matrix[y][x];
+            const value = (matrix[y][x] === emptyNum) ? 9 : matrix[y][x];
             const node = itemNodes[value - 1];
             setNodeStyles(node, x, y);
         }
