@@ -41,9 +41,9 @@ function setNodeStyles(node, x, y) {
 }
 
 function swap(coords1, coords2, matrix) {
-    const temp = matrix[coords1[1]][coords1[0]];
-    matrix[coords1[1]][coords1[0]] = matrix[coords2[1]][coords2[0]];
-    matrix[coords2[1]][coords2[0]] = temp;
+    const temp = matrix[coords1[0]][coords1[1]];
+    matrix[coords1[0]][coords1[1]] = matrix[coords2[0]][coords2[1]];
+    matrix[coords2[0]][coords2[1]] = temp;
 }
 
 function getAlgorithm() {

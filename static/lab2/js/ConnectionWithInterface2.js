@@ -1,9 +1,10 @@
 //import {State} from "./State.mjs";
 //import {stateFinder, dfsTraverseStep, bfsTraverseStep} from "./StateFinder.mjs";
-import {getMatrix, setInitialValues, setPositionItems, swap, getAlgorithm} from "../../InterfaceFunctions.mjs";
+import {getMatrix, setInitialValues, setPositionItems, swap, getAlgorithm} from "../../commonjs/InterfaceFunctions.mjs";
 
 const containerNode = document.getElementById('fifteen');
 const itemNodes = Array.from(containerNode.querySelectorAll('.item'));
+let menuAlgorithm = document.getElementById('algorithms');
 const countItems = 9;
 const emptyNum = '*';
 let algorithm, iteration = 1;
@@ -21,6 +22,7 @@ let matrix = getMatrix(itemNodes.map((item) => Number(item.dataset.matrixId)));
 setInitialValues(matrix, valuesBegin);
 setPositionItems(matrix, itemNodes, emptyNum);
 
+/*
 document.getElementById('buttonAuto').onclick = () => {
     autoAlgorithm();
 }
@@ -36,7 +38,7 @@ document.getElementById('buttonReset').addEventListener('click', () => {
     iteration = 1;
 })
 
-/*
+
 //Изменить на актуальные алгоритмы в return
 function defineAndUseAlgorithm(){
     algorithm = getAlgorithm();
@@ -68,16 +70,17 @@ function defineAndUseAlgorithmLogger(){
     }
 }
 
+/*
 let finished = false;
 function autoAlgorithm(){
 
 }
 
-/*
+
 async function stepAlg() {
     return iterator.next();
-}*/
+}
 
 function singleStep() {
 
-}
+}*/
