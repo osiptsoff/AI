@@ -5,7 +5,7 @@ import {getMatrix, setInitialValues, setPositionItems, swap, getAlgorithm} from 
 
 const containerNode = document.getElementById('fifteen');
 const itemNodes = Array.from(containerNode.querySelectorAll('.item'));
-let menuAlgorithm = document.getElementById('algorithms');
+let menuAlgorithm = document.getElementsByClassName('algorithms');
 const countItems = 9, emptyNum = '*';
 let algorithm;
 let iteration;
@@ -132,22 +132,57 @@ function serializeState(state) {
     return res;
 }
 
+function autoFinishWork(state, startTime){
+    logger.flushBuffer(fileName);
+    outWindow.value += "Конечное состояние найдено на глубине " + state.depth + ".\nТекущее состояние:\n" + state + "\n\nАлгоритм достиг конечного состояния!"
+                      + "\nИнформацию об итерациях и найденный путь можно посмотреть в log-файлах.";
+    //Правильный путь
+    let rightWay = [];
+    rightWay.push(state);
+
+    for(let i=state[stateFinder.parentSymbol]; i !== undefined; i=i[stateFinder.parentSymbol]){
+        rightWay.push(i);
+    }
+    rightWay.reverse();
+    
+    logger.addToBuffer("Правильный путь\n");
+    rightWay.forEach((state) => {
+        logger.addToBuffer(state + '');
+    });
+    logger.flushBuffer(fileName);
+    
+    //Добавить вывод информации о времени работы алгоритма
+    const endTime = performance.now();
+    const executionTime = endTime - startTime;
+    outWindow.value += "\nВремя выполнения алгоритма: " + executionTime + " миллисекунд.";
+
+    rightWay.forEach((state, index) => {    
+        let changeCause = state[stateFinder.changeCauseSymbol];
+        if (changeCause) {
+            setTimeout(() => {
+                swap(changeCause[1], changeCause[0], matrix);
+                setPositionItems(matrix, itemNodes, emptyNum);
+            }, index * 300);    // 300 миллисекунд (0.3 секунды) задержки между каждым вызовом
+        }
+    });
+}
+
 let finished = false;
+
 function autoAlgorithm() {
     fileName = defineAndUseAlgorithmLogger();
+    const startTime = performance.now(); // performance.now() имеет высокую точность
     if(!finished)
         stepAlg()
             .then(e => {
-                logger.addToBuffer( "Итерация №" + (iteration++) + '\n' + serializeState(e.value));
+                logger.addToBuffer("Итерация №" + (iteration++) + '\n' + serializeState(e.value));
                 return e.value
             })
+            // сделать функцией
             .then(e => {
-                if(stateFinder.statesEqual(e, finish)) {//что то потом написать
+                if(stateFinder.statesEqual(e, finish)) {
                     finished = true;
-                    logger.flushBuffer(fileName)
-                    outWindow.value += "Конечное состояние найдено на глубине " + e.depth + ".\nТекущее состояние:\n" + e + "\n\nАлгоритм достиг конечного состояния!"
-                                      + "\nИнформацию об итерациях и найденный путь можно посмотреть в log-файлах.";
-                    //Добавить вывод информации о времени работы алгоритма
+                    autoFinishWork(e, startTime);               
                 }
             })
             .then(autoAlgorithm)
@@ -155,12 +190,13 @@ function autoAlgorithm() {
                 if (finished)
                     finishAuto();
             });
-    // stateFinder.algorithm = result;
 }
 
 async function stepAlg() {
     return iterator.next();
 }
+
+let variableForParentBackground = [[0,0,0],[0,0,0],[0,0,0]]; // Настя посмотри, что можно с этим сделать
 
 function singleStep() {
     stepAlg()
@@ -171,6 +207,9 @@ function singleStep() {
         .then(e => {
             let changeCause = e[stateFinder.changeCauseSymbol];
             if(changeCause) {
+                setInitialValues(variableForParentBackground, e[stateFinder.parentSymbol].matrix); 
+                matrix = variableForParentBackground;
+                //matrix = e[stateFinder.parentSymbol].matrix;
                 swap(changeCause[1], changeCause[0], matrix);
                 setPositionItems(matrix, itemNodes, emptyNum);
             }
