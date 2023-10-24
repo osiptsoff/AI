@@ -100,10 +100,19 @@ input {
     margin-right: 5px;
     position: relative;
     top: 3px;
-}
 
-input:checked {
-    border: 6px solid black;
+    &:enabled {
+        background-color : rgb(255, 255, 255);
+    }
+    &:checked:enabled {
+        border: 5px solid black;
+    }
+    &:checked:disabled {
+        border: 5px solid rgba(61, 58, 58, 0.815);
+    }
+    &:disabled {
+        background-color : rgba(110, 103, 103, 0.507);
+    }
 }
 
 .buttonAuto {
@@ -116,8 +125,14 @@ input:checked {
     cursor: pointer;
     margin-bottom: 1rem;
     
-    &:hover {
+    &:hover:enabled {
+        color: #28271f;
         background: #bdd0f2;
+    }
+    &:disabled {
+        cursor: auto;
+        color: #3f3f3cab;
+        background-color : rgba(110, 103, 103, 0.507);
     }
 }
 
@@ -131,8 +146,14 @@ input:checked {
     cursor: pointer;
     margin-bottom: 1rem;
     
-    &:hover {
+    &:hover:enabled {
+        color: #28271f;
         background: #bdd0f2;
+    }
+    &:disabled {
+        cursor: auto;
+        color: #3f3f3cab;
+        background-color : rgba(110, 103, 103, 0.507);
     }
 }
 
@@ -145,8 +166,14 @@ input:checked {
     border: none;
     cursor: pointer;
     
-    &:hover {
+    &:hover:enabled {
+        color: #28271f;
         background: #bdd0f2;
+    }
+    &:disabled {
+        cursor: auto;
+        color: #3f3f3cab;
+        background-color : rgba(110, 103, 103, 0.507);
     }
 }
 

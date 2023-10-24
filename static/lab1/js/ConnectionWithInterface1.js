@@ -5,7 +5,8 @@ import {getMatrix, setInitialValues, setPositionItems, swap, getAlgorithm} from 
 
 const containerNode = document.getElementById('fifteen');
 const itemNodes = Array.from(containerNode.querySelectorAll('.item'));
-let menuAlgorithm = document.getElementsByClassName('algorithms');
+let menuAlgorithm = document.querySelectorAll('input[type="radio"]');
+console.log(menuAlgorithm);
 const countItems = 9, emptyNum = '*';
 let algorithm;
 let iteration;
@@ -39,6 +40,8 @@ function reset() {
     outWindow.value = "";
 
     iteration = 1;
+    // unblock alg initialize
+    menuAlgorithm.forEach(b => b.disabled = false);
 
     manualStarted = false;
     buttonStep.onclick = startManual;
@@ -50,6 +53,8 @@ function startManual() {
     manualStarted = true;
 
     initializeAlgorithm();
+    // block alg initialize
+    menuAlgorithm.forEach(b => b.disabled = true);
     fileName = defineAndUseAlgorithmLogger();
     buttonStep.onclick = singleStep;
 
@@ -59,19 +64,23 @@ function startManual() {
 function finishManual() {
     buttonStep.onclick = startManual;
     manualStarted = false;
+    menuAlgorithm.forEach(b => b.disabled = false);
 }
 
 function startAuto() {
     if(!manualStarted) {
         initializeAlgorithm();
+        // block alg initialize
         fileName = defineAndUseAlgorithmLogger();
         reset();
+        menuAlgorithm.forEach(b => b.disabled = true);
     } else finishManual();
+
+    menuAlgorithm.forEach(b => b.disabled = true);
 
     buttonAuto.disabled = true;
     buttonStep.disabled = true;
     buttonReset.disabled = true;
-    menuAlgorithm.disabled = true;
 
     autoAlgorithm();
 }
@@ -80,9 +89,10 @@ function finishAuto() {
     buttonAuto.disabled = false;
     buttonStep.disabled = false;
     buttonReset.disabled = false;
-    menuAlgorithm.disabled = false;
 
     finished = false;
+    // unblock alg initialize
+    menuAlgorithm.forEach(b => b.disabled = false);
 }
 
 function defineAndUseAlgorithm(){
@@ -132,7 +142,11 @@ function serializeState(state) {
     return res;
 }
 
-function autoFinishWork(state, startTime){
+function vizualiseRightWay(state, startTime){
+
+    setInitialValues(matrix, valuesBegin);
+    setPositionItems(matrix, itemNodes, emptyNum);
+
     logger.flushBuffer(fileName);
     outWindow.value += "Конечное состояние найдено на глубине " + state.depth + ".\nТекущее состояние:\n" + state + "\n\nАлгоритм достиг конечного состояния!"
                       + "\nИнформацию об итерациях и найденный путь можно посмотреть в log-файлах.";
@@ -160,8 +174,11 @@ function autoFinishWork(state, startTime){
         let changeCause = state[stateFinder.changeCauseSymbol];
         if (changeCause) {
             setTimeout(() => {
+                // перенести сюда
                 swap(changeCause[1], changeCause[0], matrix);
                 setPositionItems(matrix, itemNodes, emptyNum);
+                if(index === rightWay.length - 1)
+                    finishAuto();
             }, index * 300);    // 300 миллисекунд (0.3 секунды) задержки между каждым вызовом
         }
     });
@@ -178,18 +195,21 @@ function autoAlgorithm() {
                 logger.addToBuffer("Итерация №" + (iteration++) + '\n' + serializeState(e.value));
                 return e.value
             })
-            // сделать функцией
             .then(e => {
                 if(stateFinder.statesEqual(e, finish)) {
                     finished = true;
-                    autoFinishWork(e, startTime);               
+                    vizualiseRightWay(e, startTime);               
                 }
             })
             .then(autoAlgorithm)
-            .then(() => {
-                if (finished)
-                    finishAuto();
-            });
+            // delete
+            // .then(() => {
+            //     if (finished)
+            //     //это перенести
+            //         finishAuto();
+            //     //это перенести
+            // });
+            // delete
 }
 
 async function stepAlg() {
