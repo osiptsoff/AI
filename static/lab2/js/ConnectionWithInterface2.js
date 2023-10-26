@@ -1,43 +1,78 @@
 //import {State} from "./State.mjs";
 //import {stateFinder, dfsTraverseStep, bfsTraverseStep} from "./StateFinder.mjs";
-import {getMatrix, setInitialValues, setPositionItems, swap, getAlgorithm} from "../../commonjs/InterfaceFunctions.mjs";
+import {setMatrixValues, swap, getAlgorithm} from "../../commonjs/InterfaceFunctions.mjs";
+import {finish, valuesBegin, matrix, emptyNum, menuAlgorithm} from "../../commonjs/InterfaceFunctions.mjs";
+import {buttonAuto, buttonStep, buttonReset} from "../../commonjs/InterfaceFunctions.mjs";
 
-const containerNode = document.getElementById('fifteen');
-const itemNodes = Array.from(containerNode.querySelectorAll('.item'));
-let menuAlgorithm = document.getElementById('algorithms');
-const countItems = 9;
-const emptyNum = '*';
-let algorithm, iteration = 1;
+let algorithm;
+let iteration;
+let iterator;
 
-let valuesBegin = [5, 8, 3, 4, emptyNum, 2, 7, 6, 1];
-let valuesEnd = [1, 2, 3, 4, 5, 6, 7, 8, emptyNum];
+buttonAuto.onclick = startAuto;
+buttonStep.onclick = startManual;
+buttonReset.onclick = reset;
 
-//let finish = new State(valuesEnd, emptyNum, 3);
-//let iterator;
-
-//initializeAlgorithm();
-
-itemNodes[countItems - 1].style.display = 'none'; //невидимая фишка
-let matrix = getMatrix(itemNodes.map((item) => Number(item.dataset.matrixId)));
-setInitialValues(matrix, valuesBegin);
-setPositionItems(matrix, itemNodes, emptyNum);
-
+let manualStarted = false;
 /*
-document.getElementById('buttonAuto').onclick = () => {
-    autoAlgorithm();
+function reset() {
+    setMatrixValues(valuesBegin);
+    outWindow.value = "";
+
+    iteration = 1;
+    // unblock alg initialize
+    menuAlgorithm.forEach(b => b.disabled = false);
+
+    manualStarted = false;
+    buttonStep.onclick = startManual;
 }
 
-document.getElementById('buttonStep').onclick = () => {
+function startManual() {
+    reset();
+
+    manualStarted = true;
+
+    initializeAlgorithm();
+    // block alg initialize
+    menuAlgorithm.forEach(b => b.disabled = true);
+    fileName = defineAndUseAlgorithmLogger();
+    buttonStep.onclick = singleStep;
+
     singleStep();
 }
 
-document.getElementById('buttonReset').addEventListener('click', () => {
-    setInitialValues(matrix, valuesBegin);
-    setPositionItems(matrix, itemNodes, emptyNum);
-    outWindow.value = "";
-    iteration = 1;
-})
+function finishManual() {
+    buttonStep.onclick = startManual;
+    manualStarted = false;
+    menuAlgorithm.forEach(b => b.disabled = false);
+}
 
+function startAuto() {
+    if(!manualStarted) {
+        initializeAlgorithm();
+        // block alg initialize
+        fileName = defineAndUseAlgorithmLogger();
+        reset();
+        menuAlgorithm.forEach(b => b.disabled = true);
+    } else finishManual();
+
+    menuAlgorithm.forEach(b => b.disabled = true);
+
+    buttonAuto.disabled = true;
+    buttonStep.disabled = true;
+    buttonReset.disabled = true;
+
+    autoAlgorithm();
+}
+
+function finishAuto() {
+    buttonAuto.disabled = false;
+    buttonStep.disabled = false;
+    buttonReset.disabled = false;
+
+    finished = false;
+    // unblock alg initialize
+    menuAlgorithm.forEach(b => b.disabled = false);
+}
 
 //Изменить на актуальные алгоритмы в return
 function defineAndUseAlgorithm(){

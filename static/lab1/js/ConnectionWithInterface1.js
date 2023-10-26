@@ -1,61 +1,39 @@
 import {State} from "./State.mjs";
 import {stateFinder, dfsTraverseStep, bfsTraverseStep} from "./StateFinder.mjs";
 import {logger} from "../../commonjs/Logger.mjs";
-import {getMatrix, setInitialValues, setPositionItems, swap, getAlgorithm} from "../../commonjs/InterfaceFunctions.mjs";
+import {setMatrixValues, swap, getAlgorithm} from "../../commonjs/InterfaceFunctions.mjs";
+import {finish, valuesBegin, matrix, emptyNum, menuAlgorithm} from "../../commonjs/InterfaceFunctions.mjs";
+import {buttonAuto, buttonStep, buttonReset} from "../../commonjs/InterfaceFunctions.mjs";
 
-const containerNode = document.getElementById('fifteen');
-const itemNodes = Array.from(containerNode.querySelectorAll('.item'));
-let menuAlgorithm = document.querySelectorAll('input[type="radio"]');
-console.log(menuAlgorithm);
-const countItems = 9, emptyNum = '*';
 let algorithm;
 let iteration;
-
-let valuesBegin = [5, 8, 3, 4, emptyNum, 2, 7, 6, 1];
-let valuesEnd = [1, 2, 3, 4, 5, 6, 7, 8, emptyNum];
-
-let finish = new State(valuesEnd, emptyNum, 3);
-let fileName;
+let fileNameAlgorithm, fileNamePath;
 let iterator;
 
-itemNodes[countItems - 1].style.display = 'none'; //невидимая фишка
-let matrix = getMatrix(itemNodes.map((item) => Number(item.dataset.matrixId)));
-setInitialValues(matrix, valuesBegin);
-setPositionItems(matrix, itemNodes, emptyNum);
-
-let buttonAuto = document.getElementById('buttonAuto');
 buttonAuto.onclick = startAuto;
-
-let buttonStep = document.getElementById('buttonStep');
 buttonStep.onclick = startManual;
-
-let buttonReset = document.getElementById('buttonReset');
 buttonReset.onclick = reset;
 
 let manualStarted = false;
 
 function reset() {
-    setInitialValues(matrix, valuesBegin);
-    setPositionItems(matrix, itemNodes, emptyNum);
+    setMatrixValues(valuesBegin);
     outWindow.value = "";
-
     iteration = 1;
+
     // unblock alg initialize
     menuAlgorithm.forEach(b => b.disabled = false);
-
     manualStarted = false;
     buttonStep.onclick = startManual;
 }
 
 function startManual() {
     reset();
-
     manualStarted = true;
 
     initializeAlgorithm();
     // block alg initialize
     menuAlgorithm.forEach(b => b.disabled = true);
-    fileName = defineAndUseAlgorithmLogger();
     buttonStep.onclick = singleStep;
 
     singleStep();
@@ -68,16 +46,18 @@ function finishManual() {
 }
 
 function startAuto() {
+    defineAndUseAlgorithmLogger();
     if(!manualStarted) {
         initializeAlgorithm();
         // block alg initialize
-        fileName = defineAndUseAlgorithmLogger();
         reset();
         menuAlgorithm.forEach(b => b.disabled = true);
-    } else finishManual();
+    } else {
+        logger.addToBuffer(outWindow.value);
+        finishManual();
+    }
 
     menuAlgorithm.forEach(b => b.disabled = true);
-
     buttonAuto.disabled = true;
     buttonStep.disabled = true;
     buttonReset.disabled = true;
@@ -95,7 +75,7 @@ function finishAuto() {
     menuAlgorithm.forEach(b => b.disabled = false);
 }
 
-function defineAndUseAlgorithm(){
+function defineAndUseAlgorithm() {
     algorithm = getAlgorithm();
     if (algorithm === "0") {
         return dfsTraverseStep;
@@ -115,12 +95,14 @@ function initializeAlgorithm() {
     iterator = stateFinder[Symbol.iterator]();
 }
 
-function defineAndUseAlgorithmLogger(){
+function defineAndUseAlgorithmLogger() {
     algorithm = getAlgorithm();
     if (algorithm === "0") {
-        return logger.logfileName.dfsAutoLog;
+        fileNameAlgorithm = logger.logfileName.dfsAutoLog;
+        fileNamePath = logger.logfileName.dfsRightPath;
     } else {
-        return logger.logfileName.bfsAutoLog;
+        fileNameAlgorithm = logger.logfileName.bfsAutoLog;
+        fileNamePath = logger.logfileName.bfsRightPath;
     }
 }
 
@@ -134,22 +116,19 @@ function serializeState(state) {
         visitedSerialized = !visited.length ? 'нет\n' : visited.join('\n');
 
     res += 'Глубина: ' + state.depth + '\n';
-    res += '\nРодитель:\n' + parentSerialized;
-    res += '\nТекущее состояние:\n' + state + '\n';
+    res += '\nРодитель:\n' + parentSerialized + '\n';
+    res += 'Текущее состояние:\n' + state + '\n';
     res += 'Запланированные к дальнейшему посещению потомки:\n' + childrenSerialized + '\n';
     res += 'Потомки, которые не будут посещены, и посещённые ранее состояния:\n' + visitedSerialized + '\n';
 
     return res;
 }
 
-function vizualiseRightWay(state, startTime){
-
-    setInitialValues(matrix, valuesBegin);
-    setPositionItems(matrix, itemNodes, emptyNum);
-
-    logger.flushBuffer(fileName);
-    outWindow.value += "Конечное состояние найдено на глубине " + state.depth + ".\nТекущее состояние:\n" + state + "\n\nАлгоритм достиг конечного состояния!"
-                      + "\nИнформацию об итерациях и найденный путь можно посмотреть в log-файлах.";
+function vizualiseRightWay(state, startTime) {
+    logger.flushBuffer(fileNameAlgorithm);
+    setMatrixValues(valuesBegin);
+    outWindow.value += "Алгоритм достиг конечного состояния!!!\nКонечное состояние найдено на глубине " + state.depth + ".\nТекущее состояние:\n" + state
+                      + "\nИнформацию об итерациях и найденный путь можно посмотреть в log-файлах.\n";
     //Правильный путь
     let rightWay = [];
     rightWay.push(state);
@@ -159,27 +138,25 @@ function vizualiseRightWay(state, startTime){
     }
     rightWay.reverse();
     
-    logger.addToBuffer("Правильный путь\n");
+    logger.addToBuffer("Найденный путь\n");
     rightWay.forEach((state) => {
-        logger.addToBuffer(state + '');
+        logger.addToBuffer(state + '\n');
     });
-    logger.flushBuffer(fileName);
+    logger.flushBuffer(fileNamePath); //алгоритм записывается сюда, хотя не должен (в этом файле только путь нужен)
     
-    //Добавить вывод информации о времени работы алгоритма
     const endTime = performance.now();
     const executionTime = endTime - startTime;
-    outWindow.value += "\nВремя выполнения алгоритма: " + executionTime + " миллисекунд.";
+    outWindow.value += "\nКоличество пройденных вершин: " + (iteration - 1)
+                        + "\nВремя выполнения алгоритма: " + executionTime + " миллисекунд";
 
     rightWay.forEach((state, index) => {    
         let changeCause = state[stateFinder.changeCauseSymbol];
         if (changeCause) {
             setTimeout(() => {
-                // перенести сюда
                 swap(changeCause[1], changeCause[0], matrix);
-                setPositionItems(matrix, itemNodes, emptyNum);
                 if(index === rightWay.length - 1)
                     finishAuto();
-            }, index * 300);    // 300 миллисекунд (0.3 секунды) задержки между каждым вызовом
+            }, index * 300); // 300 миллисекунд (0.3 секунды) задержки между каждым вызовом
         }
     });
 }
@@ -187,7 +164,6 @@ function vizualiseRightWay(state, startTime){
 let finished = false;
 
 function autoAlgorithm() {
-    fileName = defineAndUseAlgorithmLogger();
     const startTime = performance.now(); // performance.now() имеет высокую точность
     if(!finished)
         stepAlg()
@@ -202,21 +178,11 @@ function autoAlgorithm() {
                 }
             })
             .then(autoAlgorithm)
-            // delete
-            // .then(() => {
-            //     if (finished)
-            //     //это перенести
-            //         finishAuto();
-            //     //это перенести
-            // });
-            // delete
 }
 
 async function stepAlg() {
     return iterator.next();
 }
-
-let variableForParentBackground = [[0,0,0],[0,0,0],[0,0,0]]; // Настя посмотри, что можно с этим сделать
 
 function singleStep() {
     stepAlg()
@@ -227,11 +193,8 @@ function singleStep() {
         .then(e => {
             let changeCause = e[stateFinder.changeCauseSymbol];
             if(changeCause) {
-                setInitialValues(variableForParentBackground, e[stateFinder.parentSymbol].matrix); 
-                matrix = variableForParentBackground;
-                //matrix = e[stateFinder.parentSymbol].matrix;
+                setMatrixValues(e[stateFinder.parentSymbol].matrix);
                 swap(changeCause[1], changeCause[0], matrix);
-                setPositionItems(matrix, itemNodes, emptyNum);
             }
             return e;
         }).then(e => {

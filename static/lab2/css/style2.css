@@ -33,7 +33,7 @@ table, th, td {
     font-size: 1.5rem;
 }
 
-#emptyBlock {
+.emptyBlock {
     background-color: #bdd0f2;
     color: #bdd0f2;
 }
