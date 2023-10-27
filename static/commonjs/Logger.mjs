@@ -19,6 +19,9 @@ let logger = {
     },
 
     flushBuffer : function(logfile, append = false) {
+        let sendBuffer = this.buffer;
+        this.buffer = '';
+
         fetch(this.destination, {
             method : 'POST',
             mode : 'same-origin',
@@ -27,10 +30,9 @@ let logger = {
                 'logfile': logfile,
                 'append' : append
             },
-            body : this.buffer
+            body : sendBuffer
         })
             .then(response => {
-                this.buffer = '';
                 this.lastStatus = response.status;
                 console.log('Logging returned ' + response.status)
             } )
