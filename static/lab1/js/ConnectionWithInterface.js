@@ -1,5 +1,5 @@
-import {State} from "./State.mjs";
-import {stateFinder, dfsTraverseStep, bfsTraverseStep} from "./StateFinder.mjs";
+import {State} from "../../commonjs/math/State.mjs";
+import {stateFinder, dfsTraverseStep, bfsTraverseStep} from "../../commonjs/math/StateFinder.mjs";
 import {logger} from "../../commonjs/Logger.mjs";
 import {setMatrixValues, swap, getAlgorithm} from "../../commonjs/InterfaceFunctions.mjs";
 import {finish, valuesBegin, matrix, emptyNum, menuAlgorithm} from "../../commonjs/InterfaceFunctions.mjs";
@@ -124,7 +124,7 @@ function serializeState(state) {
     return res;
 }
 
-function vizualiseRightWay(state, startTime) {
+function visualizeRightWay(state, startTime) {
     logger.flushBuffer(fileNameAlgorithm);
     setMatrixValues(valuesBegin);
     outWindow.value += "Алгоритм достиг конечного состояния!!!\nКонечное состояние найдено на глубине " + state.depth + ".\nТекущее состояние:\n" + state
@@ -174,7 +174,7 @@ function autoAlgorithm() {
             .then(e => {
                 if(stateFinder.statesEqual(e, finish)) {
                     finished = true;
-                    vizualiseRightWay(e, startTime);               
+                    visualizeRightWay(e, startTime);
                 }
             })
             .then(autoAlgorithm)

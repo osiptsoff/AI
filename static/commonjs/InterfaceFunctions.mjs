@@ -1,4 +1,4 @@
-import {State} from "../lab1/js/State.mjs";
+import {State} from "./math/State.mjs";
 
 const containerNode = document.getElementById('fifteen');
 const itemNodes = Array.from(containerNode.querySelectorAll('.item'));
