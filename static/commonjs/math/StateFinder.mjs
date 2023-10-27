@@ -10,6 +10,7 @@ import {State} from "./State.mjs";
  * @type {{searchingBuffer: State[], watchedStates: Map<Number, State>, [Symbol.iterator]: (function(): {next: stateFinder.algorithm}), clear: stateFinder.clear, statesEqual: (function(*, *): boolean)}}
  */
 const stateFinder = {
+    startState : undefined,
     watchedStates : new Map(),
     searchingBuffer : [],
     parentSymbol : Symbol("parent"),

@@ -2,8 +2,11 @@ import {State} from "../../commonjs/math/State.mjs";
 import {stateFinder, dfsTraverseStep, bfsTraverseStep} from "../../commonjs/math/StateFinder.mjs";
 import {logger} from "../../commonjs/Logger.mjs";
 import {setMatrixValues, swap, getAlgorithm} from "../../commonjs/InterfaceFunctions.mjs";
-import {finish, valuesBegin, matrix, emptyNum, menuAlgorithm} from "../../commonjs/InterfaceFunctions.mjs";
+import {valuesEnd, valuesBegin, matrix, emptyNum, menuAlgorithm} from "../../commonjs/InterfaceFunctions.mjs";
 import {buttonAuto, buttonStep, buttonReset} from "../../commonjs/InterfaceFunctions.mjs";
+
+let start = new State(valuesBegin, emptyNum, 3);
+let finish = new State(valuesEnd, emptyNum, 3);
 
 let algorithm;
 let iteration;
@@ -85,11 +88,9 @@ function defineAndUseAlgorithm() {
 }
 
 function initializeAlgorithm() {
-    const result = defineAndUseAlgorithm();
-    let st = new State(valuesBegin, emptyNum, 3);
-    stateFinder.algorithm = result;
+    stateFinder.algorithm = defineAndUseAlgorithm();
 
-    stateFinder.startState = st;
+    stateFinder.startState = start;
     stateFinder.clear();
 
     iterator = stateFinder[Symbol.iterator]();

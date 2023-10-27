@@ -1,8 +1,47 @@
 //import {State} from "./State.mjs";
 //import {stateFinder, dfsTraverseStep, bfsTraverseStep} from "./StateFinder.mjs";
-import {setMatrixValues, swap, getAlgorithm} from "../../commonjs/InterfaceFunctions.mjs";
-import {finish, valuesBegin, matrix, emptyNum, menuAlgorithm} from "../../commonjs/InterfaceFunctions.mjs";
+import {setMatrixValues, swap, getAlgorithm, valuesEnd} from "../../commonjs/InterfaceFunctions.mjs";
+import {valuesBegin, matrix, emptyNum, menuAlgorithm} from "../../commonjs/InterfaceFunctions.mjs";
 import {buttonAuto, buttonStep, buttonReset} from "../../commonjs/InterfaceFunctions.mjs";
+
+let start = new State(valuesBegin, emptyNum, 3);
+let finish = new State(valuesEnd, emptyNum, 3);
+
+import {
+    heuristicStateFinder,
+    manhattanDistance,
+    misplacedNumCounter
+} from "../../commonjs/math/heuristicSearch/HeuristicStateFinder.mjs";
+import {State} from "../../commonjs/math/State.mjs";
+
+heuristicStateFinder.startState = start;
+heuristicStateFinder.finishState = finish;
+heuristicStateFinder.setHeuristics(manhattanDistance);
+
+let ctr = 0;
+for(let state of heuristicStateFinder) {
+    ctr++;
+    //console.log(state);
+    if (heuristicStateFinder.statesEqual(state, finish)) {
+        console.log(state);
+        console.log(ctr);
+        break;
+    }
+}
+
+heuristicStateFinder.setHeuristics(misplacedNumCounter);
+
+ctr = 0;
+for(let state of heuristicStateFinder) {
+    ctr++;
+    //console.log(state);
+    if (heuristicStateFinder.statesEqual(state, finish)) {
+        console.log(state);
+        console.log(ctr);
+        break;
+    }
+}
+
 
 let algorithm;
 let iteration;

@@ -39,12 +39,11 @@ class PriorityQueue {
         this._siftDown();
         return poppedValue;
     }
-    replace(value) {
-        const replacedValue = this.peek();
-        this._heap[top] = value;
-        this._siftDown();
-        return replacedValue;
+
+    clear() {
+        this._heap = [];
     }
+
     _greater(i, j) {
         return this._comparator(this._heap[i], this._heap[j]);
     }
@@ -70,3 +69,5 @@ class PriorityQueue {
         }
     }
 }
+
+export {PriorityQueue}

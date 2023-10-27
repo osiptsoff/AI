@@ -1,5 +1,3 @@
-import {State} from "./math/State.mjs";
-
 const containerNode = document.getElementById('fifteen');
 const itemNodes = Array.from(containerNode.querySelectorAll('.item'));
 let menuAlgorithm = document.querySelectorAll('input[type="radio"]');
@@ -7,7 +5,6 @@ const countItems = 9, emptyNum = '*';
 
 let valuesBegin = [5, 8, 3, 4, emptyNum, 2, 7, 6, 1];
 let valuesEnd = [1, 2, 3, 4, 5, 6, 7, 8, emptyNum];
-let finish = new State(valuesEnd, emptyNum, 3);
 
 itemNodes[countItems - 1].style.display = 'none'; //невидимая фишка
 
@@ -96,5 +93,5 @@ function getAlgorithm() {
 }
 
 export {setMatrixValues, setPositionItems, swap, getAlgorithm};
-export {finish, valuesBegin, matrix, emptyNum, menuAlgorithm};
+export {valuesEnd, valuesBegin, matrix, emptyNum, menuAlgorithm};
 export {buttonAuto, buttonStep, buttonReset};
