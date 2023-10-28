@@ -13,10 +13,11 @@ const stateFinder = {
     startState : undefined,
     watchedStates : new Map(),
     searchingBuffer : [],
-    parentSymbol : Symbol("parent"),
-    changeCauseSymbol : Symbol("changeCause"),
-    childrenSymbol : Symbol("children"),
+    parentSymbol : Symbol('parent'),
+    changeCauseSymbol : Symbol('changeCause'),
+    childrenSymbol : Symbol('children'),
     visitedSymbol : Symbol('visited'),
+    heuristicsValueSymbol : Symbol('heuristicsValue'),
     /**
      * <p>Compares two {@link State} by their {@link State#hash}.<p>
      * @param fir
@@ -25,6 +26,16 @@ const stateFinder = {
      */
     statesEqual : function(fir, sec) {
         return fir.hash() === sec.hash();
+    },
+
+    setAlgorithm : function(algorithm) {
+        this.algorithm = algorithm.bind(this);
+        //this.clear();
+    },
+
+    setHeuristics : function(heuristics) {
+        this.heuristics = heuristics.bind(this);
+        this.clear();
     },
 
     /**
@@ -44,89 +55,4 @@ const stateFinder = {
     }
 };
 
-/**
- * <p>Returns next game state according to Depth First Search algorithm.<p>
- * <p>Adds parent state to returned child, use {@link stateFinder#parentSymbol} to get it.<p>
- * <p>Adds change cause to returned child in format of array of two arrays, each consists of two coordinates of empty cell,
- *      first for parent and second for child, use {@link stateFinder#changeCauseSymbol} to get it.<p>
- * <p>Intended to be used as {@link Iterator#next} so DO NOT invoke it explicitly.<p>
- * <p>Assign this function to {@link stateFinder}'s {@code algorithm} field.<p>
- * @returns {{done: boolean}|{done: boolean, value: State}}
- */
-const dfsTraverseStep = () => {
-    if(stateFinder.searchingBuffer.length === 0)
-        return {
-            done : true
-        }
-
-    let currentState = stateFinder.searchingBuffer.pop();
-    stateFinder.watchedStates.set(currentState.hash(), currentState);
-
-    let children = [];
-    let visited = [];
-
-    for(let child of currentState)
-        if( !stateFinder.watchedStates.has(child.hash()) ) {
-            child[stateFinder.parentSymbol] = currentState;
-            child[stateFinder.changeCauseSymbol] = [[currentState.emptyX, currentState.emptyY], [child.emptyX, child.emptyY]];
-
-            children.push(child);
-            child.depth = currentState.depth + 1;
-        } else
-            visited.push(child);
-    children = children.reverse();
-
-    stateFinder.searchingBuffer.push(...children);
-
-    currentState[stateFinder.childrenSymbol] = children;
-    currentState[stateFinder.visitedSymbol] = visited;
-
-    return {
-        done : false,
-        value : currentState,
-    }
-};
-
-/**
- * <p>Returns next game state according to Breadth First Search algorithm.<p>
- * <p>Adds parent state to returned child, use {@link stateFinder#parentSymbol} to get it.<p>
- * <p>Adds change cause to returned child in format of array of two arrays, each consists of two coordinates of empty cell,
- *      first for parent and second for child, use {@link stateFinder#changeCauseSymbol} to get it.<p>
- * <p>Intended to be used as {@link Iterator#next} so DO NOT invoke it explicitly.<p>
- * <p>Assign this function to {@link stateFinder}'s {@code algorithm} field.<p>
- * @returns {{done: boolean}|{done: boolean, value: *}}
- */
-const bfsTraverseStep = () => {
-    if(stateFinder.searchingBuffer.length === 0)
-        return {
-            done : true
-        }
-
-    let currentState = stateFinder.searchingBuffer.shift();
-
-    let children = [];
-    let visited = [];
-
-    for(let child of currentState) {
-        child.depth = currentState.depth + 1;
-        if ( !stateFinder.watchedStates.has(child.hash()) ) {
-            child[stateFinder.parentSymbol] = currentState;
-            child[stateFinder.changeCauseSymbol] = [[currentState.emptyX, currentState.emptyY], [child.emptyX, child.emptyY]];
-
-            children.push(child);
-            stateFinder.watchedStates.set(child.hash(), child);
-        } else
-            visited.push(child);
-    }
-    stateFinder.searchingBuffer.push(...children);
-
-    currentState[stateFinder.childrenSymbol] = children;
-    currentState[stateFinder.visitedSymbol] = visited;
-
-    return {
-        done : false,
-        value : currentState,
-    }
-};
-
-export { stateFinder, dfsTraverseStep, bfsTraverseStep};
+export { stateFinder};

@@ -1,5 +1,6 @@
 import {State} from "../../commonjs/math/State.mjs";
-import {stateFinder, dfsTraverseStep, bfsTraverseStep} from "../../commonjs/math/StateFinder.mjs";
+import {stateFinder} from "../../commonjs/math/StateFinder.mjs";
+import {dfsTraverseStep, bfsTraverseStep} from "../../commonjs/math/Algorithm.mjs";
 import {logger} from "../../commonjs/Logger.mjs";
 import {setMatrixValues, swap, getAlgorithm} from "../../commonjs/InterfaceFunctions.mjs";
 import {valuesEnd, valuesBegin, matrix, emptyNum, menuAlgorithm} from "../../commonjs/InterfaceFunctions.mjs";
@@ -172,7 +173,7 @@ function defineAndUseAlgorithm() {
 }
 
 function initializeAlgorithm() {
-    stateFinder.algorithm = defineAndUseAlgorithm();
+    stateFinder.setAlgorithm(defineAndUseAlgorithm());
 
     stateFinder.startState = start;
     stateFinder.clear();

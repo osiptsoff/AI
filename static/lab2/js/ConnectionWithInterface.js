@@ -1,6 +1,7 @@
 import {State} from "../../commonjs/math/State.mjs";
-import {heuristicStateFinder, manhattanDistance, misplacedNumCounter}
-    from "../../commonjs/math/heuristicSearch/HeuristicStateFinder.mjs";
+import {stateFinder} from "../../commonjs/math/StateFinder.mjs";
+import {dfsTraverseStep, bfsTraverseStep} from "../../commonjs/math/Algorithm.mjs";
+import {manhattanDistance, misplacedNumCounter} from "../../commonjs/math/Heuristics.mjs";
 import {logger} from "../../commonjs/Logger.mjs";
 import {setMatrixValues, swap, getAlgorithm} from "../../commonjs/InterfaceFunctions.mjs";
 import {valuesEnd, valuesBegin, matrix, emptyNum, menuAlgorithm} from "../../commonjs/InterfaceFunctions.mjs";
@@ -8,7 +9,6 @@ import {buttonAuto, buttonStep, buttonReset} from "../../commonjs/InterfaceFunct
 
 let start = new State(valuesBegin, emptyNum, 3);
 let finish = new State(valuesEnd, emptyNum, 3);
-let stateFinder = heuristicStateFinder;
 
 let algorithm;
 let iteration;
@@ -177,6 +177,7 @@ function initializeAlgorithm() {
     stateFinder.startState = start;
     stateFinder.finishState = finish;
 
+    stateFinder.setAlgorithm(dfsTraverseStep);
     stateFinder.setHeuristics(defineAndUseHeuristics());
 
     iterator = stateFinder[Symbol.iterator]();
