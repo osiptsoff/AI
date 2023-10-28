@@ -14,6 +14,7 @@ setMatrixValues(valuesBegin);
 let buttonAuto = document.getElementById('buttonAuto');
 let buttonStep = document.getElementById('buttonStep');
 let buttonReset = document.getElementById('buttonReset');
+let downloadButton = document.getElementById('downloadButton');
 
 /**
  * <p> Формирование матрицы 3x3 для связи с интерфейсом <p>
@@ -102,4 +103,4 @@ function getHeuristics() {
 
 export {setMatrixValues, swap, getAlgorithm, getHeuristics};
 export {valuesEnd, valuesBegin, matrix, emptyNum, menuAlgorithm};
-export {buttonAuto, buttonStep, buttonReset};
+export {buttonAuto, buttonStep, buttonReset, downloadButton};

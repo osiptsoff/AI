@@ -22,6 +22,23 @@ app.get('/', (req, res) => {
     res.redirect('/index.html');
 })
 
+app.get('/download', (req, res) => {
+    if(!req.header('logfile')) {
+        res.statusCode = 400;
+        res.end();
+        return;
+    }
+    let filename = LOG_ROOT_PATH + req.header('logfile') + '.log';
+
+    if(!fs.existsSync(filename)) {
+        res.statusCode = 404;
+        res.end();
+        return;
+    }
+
+    res.download(filename);
+})
+
 app.post('/', parser, (req, res) => {
     if(req.body === undefined) {
         res.statusCode = 404;

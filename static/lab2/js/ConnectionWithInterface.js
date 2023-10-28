@@ -5,9 +5,14 @@ import {manhattanDistance, misplacedNumCounter} from "../../commonjs/math/Heuris
 
 import {logger} from "../../commonjs/Logger.mjs";
 
-import {setMatrixValues, swap, getAlgorithm, getHeuristics} from "../../commonjs/InterfaceFunctions.mjs";
+import {
+    setMatrixValues,
+    swap,
+    getAlgorithm,
+    getHeuristics,
+} from "../../commonjs/InterfaceFunctions.mjs";
 import {valuesEnd, valuesBegin, matrix, emptyNum, menuAlgorithm} from "../../commonjs/InterfaceFunctions.mjs";
-import {buttonAuto, buttonStep, buttonReset} from "../../commonjs/InterfaceFunctions.mjs";
+import {buttonAuto, buttonStep, buttonReset, downloadButton} from "../../commonjs/InterfaceFunctions.mjs";
 
 let start = new State(valuesBegin, emptyNum, 3);
 let finish = new State(valuesEnd, emptyNum, 3);
@@ -15,7 +20,6 @@ let finish = new State(valuesEnd, emptyNum, 3);
 let algorithm;
 let heuristics;
 let iteration;
-let fileNameAlgorithm, fileNamePath;
 let iterator;
 
 buttonAuto.onclick = startAuto;
@@ -23,6 +27,11 @@ buttonStep.onclick = startManual;
 buttonReset.onclick = reset;
 
 let manualStarted = false;
+
+downloadButton.onclick = () => {
+    logger.downloadLog()
+        .then(downloadButton.disabled = true);
+}
 
 function reset() {
     setMatrixValues(valuesBegin);
@@ -83,7 +92,6 @@ function finishAuto() {
 }
 
 function visualizeRightWay(state, startTime) {
-    logger.flushBuffer(fileNameAlgorithm);
     setMatrixValues(valuesBegin);
     outWindow.value += "Алгоритм достиг конечного состояния!!!\nКонечное состояние найдено на глубине " + state.depth + ".\nТекущее состояние:\n" + state
         + "\nИнформацию об итерациях и найденный путь можно посмотреть в log-файлах.\n";
@@ -100,7 +108,7 @@ function visualizeRightWay(state, startTime) {
     rightWay.forEach((state) => {
         logger.addToBuffer(state + '\n');
     });
-    logger.flushBuffer(fileNamePath);
+    logger.flushBuffer(logger.logfileName.logfile).then(downloadButton.disabled = false);
 
     const endTime = performance.now();
     const executionTime = endTime - startTime;
@@ -166,12 +174,8 @@ function singleStep() {
 function selectHeuristics() {
     heuristics = getHeuristics();
     if (heuristics === "0") {
-        fileNameAlgorithm = logger.logfileName.h1AutoLog;
-        fileNamePath = logger.logfileName.h1RightPath;
         return misplacedNumCounter;
     } else {
-        fileNameAlgorithm = logger.logfileName.h2AutoLog;
-        fileNamePath = logger.logfileName.h2RightPath;
         return manhattanDistance;
     }
 }
@@ -179,12 +183,8 @@ function selectHeuristics() {
 function selectAlgorithm() {
     algorithm = getAlgorithm();
     if (algorithm === "0") {
-        fileNameAlgorithm = logger.logfileName.dfsAutoLog;
-        fileNamePath = logger.logfileName.dfsRightPath;
         return dfsTraverseStep;
     } else {
-        fileNameAlgorithm = logger.logfileName.bfsAutoLog;
-        fileNamePath = logger.logfileName.bfsRightPath;
         return bfsTraverseStep;
     }
 }

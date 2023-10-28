@@ -115,7 +115,7 @@ input {
     }
 }
 
-.buttonAuto {
+.button {
     color:#fff;
     background: #000;
     width: 230px;
@@ -124,47 +124,6 @@ input {
     border: none;
     cursor: pointer;
     margin-bottom: 1rem;
-    
-    &:hover:enabled {
-        color: #28271f;
-        background: #bdd0f2;
-    }
-    &:disabled {
-        cursor: auto;
-        color: #3f3f3cab;
-        background-color : rgba(110, 103, 103, 0.507);
-    }
-}
-
-.buttonStep {
-    color:#fff;
-    background: #000;
-    width: 230px;
-    height: 30px;
-    font-size: 17px;
-    border: none;
-    cursor: pointer;
-    margin-bottom: 1rem;
-    
-    &:hover:enabled {
-        color: #28271f;
-        background: #bdd0f2;
-    }
-    &:disabled {
-        cursor: auto;
-        color: #3f3f3cab;
-        background-color : rgba(110, 103, 103, 0.507);
-    }
-}
-
-.buttonReset {
-    color:#fff;
-    background: #000;
-    width: 230px;
-    height: 45px;
-    font-size: 17px;
-    border: none;
-    cursor: pointer;
     
     &:hover:enabled {
         color: #28271f;
@@ -192,4 +151,11 @@ textarea {
     border: 6px solid #bdd0f2;
 
     font-size: 16px;
+}
+
+#downloadButton {
+    position : relative;
+    width : 60%;
+    left : 20%;
+    right : 20%;
 }
