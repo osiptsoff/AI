@@ -92,6 +92,6 @@ function getAlgorithm() {
             return alg.value;
 }
 
-export {setMatrixValues, setPositionItems, swap, getAlgorithm};
+export {setMatrixValues, swap, getAlgorithm};
 export {valuesEnd, valuesBegin, matrix, emptyNum, menuAlgorithm};
 export {buttonAuto, buttonStep, buttonReset};

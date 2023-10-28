@@ -49,7 +49,6 @@ function finishManual() {
 }
 
 function startAuto() {
-    defineAndUseAlgorithmLogger();
     if(!manualStarted) {
         initializeAlgorithm();
         // block alg initialize
@@ -78,53 +77,6 @@ function finishAuto() {
     menuAlgorithm.forEach(b => b.disabled = false);
 }
 
-function defineAndUseAlgorithm() {
-    algorithm = getAlgorithm();
-    if (algorithm === "0") {
-        return dfsTraverseStep;
-    } else {
-        return bfsTraverseStep;
-    }
-}
-
-function initializeAlgorithm() {
-    stateFinder.algorithm = defineAndUseAlgorithm();
-
-    stateFinder.startState = start;
-    stateFinder.clear();
-
-    iterator = stateFinder[Symbol.iterator]();
-}
-
-function defineAndUseAlgorithmLogger() {
-    algorithm = getAlgorithm();
-    if (algorithm === "0") {
-        fileNameAlgorithm = logger.logfileName.dfsAutoLog;
-        fileNamePath = logger.logfileName.dfsRightPath;
-    } else {
-        fileNameAlgorithm = logger.logfileName.bfsAutoLog;
-        fileNamePath = logger.logfileName.bfsRightPath;
-    }
-}
-
-function serializeState(state) {
-    let res = '',
-        parent = state[stateFinder.parentSymbol],
-        children = state[stateFinder.childrenSymbol],
-        visited = state[stateFinder.visitedSymbol];
-    let parentSerialized = parent === undefined ? 'нет\n' : parent + '',
-        childrenSerialized = !children.length ? 'нет\n'  : children.join('\n'),
-        visitedSerialized = !visited.length ? 'нет\n' : visited.join('\n');
-
-    res += 'Глубина: ' + state.depth + '\n';
-    res += '\nРодитель:\n' + parentSerialized + '\n';
-    res += 'Текущее состояние:\n' + state + '\n';
-    res += 'Запланированные к дальнейшему посещению потомки:\n' + childrenSerialized + '\n';
-    res += 'Потомки, которые не будут посещены, и посещённые ранее состояния:\n' + visitedSerialized + '\n';
-
-    return res;
-}
-
 function visualizeRightWay(state, startTime) {
     logger.flushBuffer(fileNameAlgorithm);
     setMatrixValues(valuesBegin);
@@ -143,7 +95,7 @@ function visualizeRightWay(state, startTime) {
     rightWay.forEach((state) => {
         logger.addToBuffer(state + '\n');
     });
-    logger.flushBuffer(fileNamePath); //алгоритм записывается сюда, хотя не должен (в этом файле только путь нужен)
+    logger.flushBuffer(fileNamePath);
     
     const endTime = performance.now();
     const executionTime = endTime - startTime;
@@ -204,4 +156,44 @@ function singleStep() {
                 finishManual();
             }
         });
+}
+
+function defineAndUseAlgorithm() {
+    algorithm = getAlgorithm();
+    if (algorithm === "0") {
+        fileNameAlgorithm = logger.logfileName.dfsAutoLog;
+        fileNamePath = logger.logfileName.dfsRightPath;
+        return dfsTraverseStep;
+    } else {
+        fileNameAlgorithm = logger.logfileName.bfsAutoLog;
+        fileNamePath = logger.logfileName.bfsRightPath;
+        return bfsTraverseStep;
+    }
+}
+
+function initializeAlgorithm() {
+    stateFinder.algorithm = defineAndUseAlgorithm();
+
+    stateFinder.startState = start;
+    stateFinder.clear();
+
+    iterator = stateFinder[Symbol.iterator]();
+}
+
+function serializeState(state) {
+    let res = '',
+        parent = state[stateFinder.parentSymbol],
+        children = state[stateFinder.childrenSymbol],
+        visited = state[stateFinder.visitedSymbol];
+    let parentSerialized = parent === undefined ? 'нет\n' : parent + '',
+        childrenSerialized = !children.length ? 'нет\n'  : children.join('\n'),
+        visitedSerialized = !visited.length ? 'нет\n' : visited.join('\n');
+
+    res += 'Глубина: ' + state.depth + '\n';
+    res += '\nРодитель:\n' + parentSerialized + '\n';
+    res += 'Текущее состояние:\n' + state + '\n';
+    res += 'Запланированные к дальнейшему посещению потомки:\n' + childrenSerialized + '\n';
+    res += 'Потомки, которые не будут посещены, и посещённые ранее состояния:\n' + visitedSerialized + '\n';
+
+    return res;
 }
