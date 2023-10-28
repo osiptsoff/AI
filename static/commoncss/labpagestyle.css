@@ -77,7 +77,7 @@ h2 {
     font-size: 28px;
 }
 
-.algorithms {
+.algorithms, .heuristics {
     border-style: solid;
     border-color: #bdd0f2;
     margin-bottom: 1rem;

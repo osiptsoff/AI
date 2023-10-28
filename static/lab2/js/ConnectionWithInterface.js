@@ -2,8 +2,10 @@ import {State} from "../../commonjs/math/State.mjs";
 import {stateFinder} from "../../commonjs/math/StateFinder.mjs";
 import {dfsTraverseStep, bfsTraverseStep} from "../../commonjs/math/Algorithm.mjs";
 import {manhattanDistance, misplacedNumCounter} from "../../commonjs/math/Heuristics.mjs";
+
 import {logger} from "../../commonjs/Logger.mjs";
-import {setMatrixValues, swap, getAlgorithm} from "../../commonjs/InterfaceFunctions.mjs";
+
+import {setMatrixValues, swap, getAlgorithm, getHeuristics} from "../../commonjs/InterfaceFunctions.mjs";
 import {valuesEnd, valuesBegin, matrix, emptyNum, menuAlgorithm} from "../../commonjs/InterfaceFunctions.mjs";
 import {buttonAuto, buttonStep, buttonReset} from "../../commonjs/InterfaceFunctions.mjs";
 
@@ -11,6 +13,7 @@ let start = new State(valuesBegin, emptyNum, 3);
 let finish = new State(valuesEnd, emptyNum, 3);
 
 let algorithm;
+let heuristics;
 let iteration;
 let fileNameAlgorithm, fileNamePath;
 let iterator;
@@ -160,9 +163,9 @@ function singleStep() {
     });
 }
 
-function defineAndUseHeuristics() {
-    algorithm = getAlgorithm();
-    if (algorithm === "0") {
+function selectHeuristics() {
+    heuristics = getHeuristics();
+    if (heuristics === "0") {
         fileNameAlgorithm = logger.logfileName.h1AutoLog;
         fileNamePath = logger.logfileName.h1RightPath;
         return misplacedNumCounter;
@@ -173,12 +176,25 @@ function defineAndUseHeuristics() {
     }
 }
 
+function selectAlgorithm() {
+    algorithm = getAlgorithm();
+    if (algorithm === "0") {
+        fileNameAlgorithm = logger.logfileName.dfsAutoLog;
+        fileNamePath = logger.logfileName.dfsRightPath;
+        return dfsTraverseStep;
+    } else {
+        fileNameAlgorithm = logger.logfileName.bfsAutoLog;
+        fileNamePath = logger.logfileName.bfsRightPath;
+        return bfsTraverseStep;
+    }
+}
+
 function initializeAlgorithm() {
     stateFinder.startState = start;
     stateFinder.finishState = finish;
 
-    stateFinder.setAlgorithm(dfsTraverseStep);
-    stateFinder.setHeuristics(defineAndUseHeuristics());
+    stateFinder.setAlgorithm(selectAlgorithm());
+    stateFinder.setHeuristics(selectHeuristics());
 
     iterator = stateFinder[Symbol.iterator]();
 }

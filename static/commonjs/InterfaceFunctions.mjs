@@ -92,6 +92,14 @@ function getAlgorithm() {
             return alg.value;
 }
 
-export {setMatrixValues, swap, getAlgorithm};
+function getHeuristics() {
+    const heuristics = document.querySelectorAll('input[name="heuristics"]')
+
+    for (const hr of heuristics)
+        if (hr.checked)
+            return hr.value;
+}
+
+export {setMatrixValues, swap, getAlgorithm, getHeuristics};
 export {valuesEnd, valuesBegin, matrix, emptyNum, menuAlgorithm};
 export {buttonAuto, buttonStep, buttonReset};

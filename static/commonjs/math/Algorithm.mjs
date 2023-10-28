@@ -34,12 +34,15 @@ const dfsTraverseStep = function() {
 
     children = children.reverse();
 
-    if (this.heuristics !== undefined)
+    if (this.heuristics !== undefined) {
         children.sort(
             (state1, state2) => {
                 return this.heuristics(state1) - this.heuristics(state2);
             }
         );
+
+        currentState[this.heuristicsValueSymbol] = this.heuristics(currentState);
+    }
 
     this.searchingBuffer.push(...children);
 
@@ -84,12 +87,16 @@ const bfsTraverseStep = function()  {
             visited.push(child);
     }
 
-    if(this.heuristics !== undefined)
+    if(this.heuristics !== undefined) {
         children.sort(
             (state1, state2) => {
                 return this.heuristics(state1) - this.heuristics(state2)
             }
         )
+
+        currentState[this.heuristicsValueSymbol] = this.heuristics(currentState);
+    }
+
 
     this.searchingBuffer.push(...children);
 

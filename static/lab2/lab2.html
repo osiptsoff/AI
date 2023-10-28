@@ -58,9 +58,14 @@
             <button class="item" data-matrix-id="9">*</button>
         </div>
         <div class="algorithms">
-            <h3>Выбор эврестической функции для алгоритма А*</h3>
-            <input type="radio" name="algorithms" value="0" checked> h1 (число фишек, стоящих не на своем месте) <br>
-            <input type="radio" name="algorithms" value="1"> h2 (суммарное по всем фишкам число шагов до целевого положения - манхэттенское расстояние)
+            <h3>Выбор алгоритма</h3>
+            <input type="radio" name="algorithms" value="0" checked>Поиск в глубину <br>
+            <input type="radio" name="algorithms" value="1">Поиск в ширину
+        </div>
+        <div class="heuristics">
+            <h3>Выбор эврестической функции</h3>
+            <input type="radio" name="heuristics" value="0" checked> h1 (число фишек, стоящих не на своем месте) <br>
+            <input type="radio" name="heuristics" value="1"> h2 (манхэттенское расстояние)
         </div>
         <button class="buttonAuto" id="buttonAuto">Автоматический запуск алгоритма и визуализация найденного пути</button>
         <button class="buttonStep" id="buttonStep">Один шаг алгоритма</button>
