@@ -7,17 +7,16 @@ const heuristicStateFinder = {
     finishState : undefined,
     heuristics : undefined,
     searchingBuffer : new PriorityQueue (
-        (state1, state2) => {
-            return heuristicStateFinder.heuristics(state1) > heuristicStateFinder.heuristics(state2)
-        }
+        (state1, state2) =>
+            heuristicStateFinder.heuristics(state1) <= heuristicStateFinder.heuristics(state2)
     ),
 
     setHeuristics : function(heuristics) {
         this.heuristics = heuristics;
 
-        // this.searchingBuffer = new PriorityQueue(
-        //     (state1, state2) => { return heuristics(state1) > heuristics(state2) }
-        // );
+         // this.searchingBuffer = new PriorityQueue(
+         //     (state1, state2) => heuristics(state1) <= heuristics(state2)
+         // );
         this.clear();
     },
 
@@ -67,7 +66,7 @@ heuristicStateFinder.algorithm = () => {
 };
 
 let misplacedNumCounter = (state) => {
-    return state.matrix.reduce( (acc, val, idx) => acc - +(val !== heuristicStateFinder.finishState.matrix[idx]), 0 );
+    return state.matrix.reduce( (acc, val, idx) => acc + +(val !== heuristicStateFinder.finishState.matrix[idx]), 0 );
 }
 
 let manhattanDistance = (state) => {
@@ -90,7 +89,7 @@ let manhattanDistance = (state) => {
         stateCoordsPair = stateCoords.get(key);
         targetCoordsPair = targetCoords.get(key);
 
-        result -= Math.abs(stateCoordsPair[0] - targetCoordsPair[0]) + Math.abs(stateCoordsPair[1] - targetCoordsPair[1]);
+        result += Math.abs(stateCoordsPair[0] - targetCoordsPair[0]) + Math.abs(stateCoordsPair[1] - targetCoordsPair[1]);
     }
 
     return result;
