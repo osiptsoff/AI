@@ -8,7 +8,11 @@ const heuristicStateFinder = {
     heuristics : undefined,
     searchingBuffer : new PriorityQueue (
         (state1, state2) =>
-            heuristicStateFinder.heuristics(state1) <= heuristicStateFinder.heuristics(state2)
+            Math.max(heuristicStateFinder.heuristics(state1),
+                heuristicStateFinder.heuristics(state1[stateFinder.parentSymbol]))
+                <=
+            Math.max(heuristicStateFinder.heuristics(state2),
+                heuristicStateFinder.heuristics(state2[stateFinder.parentSymbol]))
     ),
 
     setHeuristics : function(heuristics) {
@@ -53,7 +57,7 @@ heuristicStateFinder.algorithm = () => {
         } else
             visited.push(child);
     }
-    heuristicStateFinder.searchingBuffer.push(...children);
+    heuristicStateFinder.searchingBuffer.push(...children.reverse());
 
     currentState[heuristicStateFinder.childrenSymbol] = children;
     currentState[heuristicStateFinder.visitedSymbol] = visited;
@@ -66,10 +70,14 @@ heuristicStateFinder.algorithm = () => {
 };
 
 let misplacedNumCounter = (state) => {
+    if(!state) return 100000000000;
+
     return state.matrix.reduce( (acc, val, idx) => acc + +(val !== heuristicStateFinder.finishState.matrix[idx]), 0 );
 }
 
 let manhattanDistance = (state) => {
+    if(!state) return 100000000000;
+
     let result = 0;
 
     let size = state.size;
